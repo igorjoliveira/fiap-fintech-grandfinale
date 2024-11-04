@@ -96,7 +96,7 @@ public class Usuario extends BaseModel {
             }
         }
 
-        var controleFinanceiro = new ControleFinanceiro(this.getCodigo(), descricao);
+        var controleFinanceiro = new ControleFinanceiro(descricao);
         controleFinanceiro.adicionarParticipante(this.getCodigo(), true);
 
         controleFinanceiroLista.add(controleFinanceiro);

@@ -8,7 +8,6 @@ import java.util.List;
 
 public class ControleFinanceiro extends BaseModel {
 
-    private int codigoProprietario;
     private String descricao;
     private Boolean ativo;
     private List<Participante> participanteLista;
@@ -17,9 +16,8 @@ public class ControleFinanceiro extends BaseModel {
         super();
         this.participanteLista = new ArrayList<>();
     }
-    public ControleFinanceiro(int codigoProprietario, String descricao) {
+    public ControleFinanceiro(String descricao) {
         this();
-        this.codigoProprietario = codigoProprietario;
         this.descricao = descricao;
         this.ativo = true;
         this.setDataHoraCadastro(LocalDateTime.now());
@@ -29,7 +27,6 @@ public class ControleFinanceiro extends BaseModel {
     public String getDescricao() {
         return descricao;
     }
-    public int getCodigoProprietario() { return codigoProprietario; }
     public List<Participante> getParticipanteLista() { return participanteLista; }
 
     public ControleFinanceiro adicionarParticipante(int codigoUsuario, Boolean proprietario) throws EntradaDadoInvalidaException {
