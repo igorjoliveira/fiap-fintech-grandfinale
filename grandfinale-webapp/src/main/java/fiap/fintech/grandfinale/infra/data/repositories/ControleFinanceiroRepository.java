@@ -16,8 +16,8 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
     }
 
     @Override
-    public void insert(ControleFinanceiro controleFinanceiro) {
-
+    public int insert(ControleFinanceiro controleFinanceiro) {
+        return 0;
     }
 
     @Override

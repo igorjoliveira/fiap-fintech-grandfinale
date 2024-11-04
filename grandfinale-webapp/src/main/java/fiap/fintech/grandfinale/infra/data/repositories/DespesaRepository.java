@@ -16,8 +16,8 @@ public class DespesaRepository extends BaseRepository<Despesa> implements IDespe
     }
 
     @Override
-    public void insert(Despesa despesa) {
-
+    public int insert(Despesa despesa) {
+        return 0;
     }
 
     @Override

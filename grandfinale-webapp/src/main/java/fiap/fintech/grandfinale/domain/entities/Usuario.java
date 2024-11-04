@@ -16,13 +16,41 @@ public class Usuario extends BaseModel {
     private String senha;
     private String sobreNome;
     private LocalDate dataNascimento;
+    private Boolean ativo;
     private Autenticador autenticador;
     private List<ControleFinanceiro> controleFinanceiroLista;
 
-    private Usuario(){
+    public Sexo getSexo() {
+        return sexo;
+    }
+    public String getNome() {
+        return nome;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public String getSobreNome() {
+        return sobreNome;
+    }
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+    public Boolean getAtivo() {
+        return ativo;
+    }
+    public Autenticador getAutenticador() {
+        return autenticador;
+    }
+    public List<ControleFinanceiro> getControleFinanceiroLista() { return controleFinanceiroLista; }
+
+    public Usuario(){
         super();
         this.controleFinanceiroLista = new ArrayList<>();
     }
+
     public Usuario(String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, String email){
         this();
         this.nome = nome;
@@ -30,19 +58,26 @@ public class Usuario extends BaseModel {
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
         this.email = email;
+        this.ativo = true;
         this.setDataHoraCadastro(LocalDateTime.now());
     }
 
-    public Sexo getSexo() { return sexo; }
-    public String getNome() {
-        return nome;
+    public Usuario carregarUsuario(int codigo, String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, Boolean ativo, String email, Autenticador autenticador, String senha, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraModificacao){
+        this.setCodigo(codigo);
+        this.setDataHoraCadastro(dataHoraCadastro);
+        this.setDataHoraAtualizacao(dataHoraModificacao);
+
+        this.nome = nome;
+        this.sobreNome = sobreNome;
+        this.sexo = sexo;
+        this.dataNascimento = dataNascimento;
+        this.ativo = ativo;
+        this.email = email;
+        this.ativo = true;
+        definirAutenticador(autenticador, senha);
+
+        return this;
     }
-    public String getEmail() { return email; }
-    public String getSenha() { return senha; }
-    public String getSobreNome() { return sobreNome; }
-    public Autenticador getAutenticador() { return autenticador; }
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public List<ControleFinanceiro> getControleFinanceiroLista() { return controleFinanceiroLista; }
 
     public Usuario definirAutenticador(Autenticador autenticador, String senha){
         this.autenticador = autenticador;
@@ -62,7 +97,7 @@ public class Usuario extends BaseModel {
         }
 
         var controleFinanceiro = new ControleFinanceiro(this.getCodigo(), descricao);
-        controleFinanceiro.adicionarParticipante(this.getCodigo());
+        controleFinanceiro.adicionarParticipante(this.getCodigo(), true);
 
         controleFinanceiroLista.add(controleFinanceiro);
         return this;

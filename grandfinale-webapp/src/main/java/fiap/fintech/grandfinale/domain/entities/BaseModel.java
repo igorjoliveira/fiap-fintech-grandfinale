@@ -16,7 +16,6 @@ public abstract class BaseModel{
     protected void setCodigo(int codigo) { this.codigo = codigo; }
     public LocalDateTime getDataHoraCadastro() { return dataHoraCadastro; }
     public LocalDateTime getDataHoraAtualizacao() { return dataHoraAtualizacao; }
-    public void setDataHoraCadastro(LocalDateTime dataHoraCadastro) { this.dataHoraCadastro = dataHoraCadastro; }
-    public void setDataHoraAtualizacao(LocalDateTime dataHoraAtualizacao) { this.dataHoraAtualizacao = dataHoraAtualizacao; }
+    protected void setDataHoraCadastro(LocalDateTime dataHoraCadastro) { this.dataHoraCadastro = dataHoraCadastro; }
+    protected void setDataHoraAtualizacao(LocalDateTime dataHoraAtualizacao) { this.dataHoraAtualizacao = dataHoraAtualizacao; }
 }
-

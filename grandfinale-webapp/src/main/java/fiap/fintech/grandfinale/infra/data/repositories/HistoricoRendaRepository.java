@@ -16,8 +16,8 @@ public class HistoricoRendaRepository extends BaseRepository<HistoricoRenda> imp
     }
 
     @Override
-    public void insert(HistoricoRenda historicoRenda) {
-
+    public int insert(HistoricoRenda historicoRenda) {
+        return 0;
     }
 
     @Override

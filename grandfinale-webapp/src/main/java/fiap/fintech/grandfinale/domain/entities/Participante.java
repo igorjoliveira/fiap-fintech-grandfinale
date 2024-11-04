@@ -13,6 +13,7 @@ public class Participante extends BaseModel {
     private int codigoUsuario;
     private int codigoControleFinanceiro;
     private Boolean ativo;
+    private Boolean proprietario;
     private List<Renda> rendaLista;
     private List<Despesa> despesaLista;
     private List<CarteiraDigital> carteiraDigitalLista;
@@ -23,17 +24,19 @@ public class Participante extends BaseModel {
         this.despesaLista = new ArrayList<>();
         this.carteiraDigitalLista = new ArrayList<>();
     }
-    public Participante(int codigoUsuario, int codigoControleFinanceiro, Boolean ativo) {
+    public Participante(int codigoUsuario, int codigoControleFinanceiro, Boolean ativo, Boolean proprietario) {
         this();
         this.codigoUsuario = codigoUsuario;
         this.codigoControleFinanceiro = codigoControleFinanceiro;
         this.ativo = ativo;
+        this.proprietario = proprietario;
         this.setDataHoraCadastro(LocalDateTime.now());
     }
 
     public int getCodigoUsuario() { return codigoUsuario; }
     public int getCodigoControleFinanceiro() { return codigoControleFinanceiro; }
     public Boolean getAtivo() { return ativo; }
+    public Boolean getProprietario() { return proprietario; }
     public List<Renda> getRendaLista() { return rendaLista; }
     public List<Despesa> getDespesaLista() { return despesaLista; }
     public List<CarteiraDigital> getCarteiraDigitalLista() { return carteiraDigitalLista; }

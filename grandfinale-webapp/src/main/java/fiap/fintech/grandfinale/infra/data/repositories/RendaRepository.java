@@ -16,8 +16,8 @@ public class RendaRepository extends BaseRepository<Renda> implements IRendaRepo
     }
 
     @Override
-    public void insert(Renda renda) {
-
+    public int insert(Renda renda) {
+        return 0;
     }
 
     @Override

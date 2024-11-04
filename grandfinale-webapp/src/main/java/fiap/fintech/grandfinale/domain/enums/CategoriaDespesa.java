@@ -1,23 +1,17 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum CategoriaDespesa {
-    Alimentacao,
-    Transporte,
-    Estudo,
-    Investimento,
-    Diversao,
-    Outros;
+    Alimentacao(1),
+    Transporte(2),
+    Estudo(3),
+    Investimento(4),
+    Diversao(5),
+    Outros(6);
 
-    public static CategoriaDespesa Converter(int item){
-        return switch (item) {
-            case 1 -> CategoriaDespesa.Alimentacao;
-            case 2 -> CategoriaDespesa.Transporte;
-            case 3 -> CategoriaDespesa.Estudo;
-            case 4 -> CategoriaDespesa.Investimento;
-            case 5 -> CategoriaDespesa.Diversao;
-            case 6 -> CategoriaDespesa.Outros;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    CategoriaDespesa(int value) {
+        this.value = value;
     }
 }
-

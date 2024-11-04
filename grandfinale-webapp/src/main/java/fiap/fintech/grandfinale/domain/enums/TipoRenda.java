@@ -1,18 +1,15 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum TipoRenda {
-    Salario,
-    ValeAlimentacao,
-    ValeRestaurante,
-    Outros;
+    Salario(1),
+    ValeAlimentacao(2),
+    ValeRestaurante(3),
+    Outros(4);
 
-    public static TipoRenda Converter(int item){
-        return switch (item) {
-            case 1 -> TipoRenda.Salario;
-            case 2 -> TipoRenda.ValeAlimentacao;
-            case 3 -> TipoRenda.ValeRestaurante;
-            case 4 -> TipoRenda.Outros;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    TipoRenda(int value) {
+        this.value = value;
     }
 }

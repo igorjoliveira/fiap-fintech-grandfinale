@@ -16,8 +16,8 @@ public class CarteiraDigitalRepository extends BaseRepository<CarteiraDigital> i
     }
 
     @Override
-    public void insert(CarteiraDigital carteiraDigital) {
-
+    public int insert(CarteiraDigital carteiraDigital) {
+        return 0;
     }
 
     @Override

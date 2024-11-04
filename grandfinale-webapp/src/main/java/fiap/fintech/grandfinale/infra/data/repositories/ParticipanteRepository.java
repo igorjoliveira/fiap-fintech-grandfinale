@@ -16,8 +16,8 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
     }
 
     @Override
-    public void insert(Participante participante) {
-
+    public int insert(Participante participante) {
+        return 0;
     }
 
     @Override

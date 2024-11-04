@@ -1,22 +1,17 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum InstituicaoFinanceira {
-    C6,
-    XP,
-    Itau,
-    Nubank,
-    Bradesco,
-    Santander;
+    C6(1),
+    XP(2),
+    Itau(3),
+    Nubank(4),
+    Bradesco(5),
+    Santander(6);
 
-    public static InstituicaoFinanceira Converter(int item){
-        return switch (item) {
-            case 1 -> InstituicaoFinanceira.C6;
-            case 2 -> InstituicaoFinanceira.XP;
-            case 3 -> InstituicaoFinanceira.Itau;
-            case 4 -> InstituicaoFinanceira.Nubank;
-            case 5 -> InstituicaoFinanceira.Bradesco;
-            case 6 -> InstituicaoFinanceira.Santander;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    InstituicaoFinanceira(int value) {
+        this.value = value;
     }
 }

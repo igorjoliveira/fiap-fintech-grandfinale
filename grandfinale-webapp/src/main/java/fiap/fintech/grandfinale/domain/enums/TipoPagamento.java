@@ -1,19 +1,15 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum TipoPagamento {
-    Cartao,
-    Cheque,
-    Transferencia,
-    Outros;
+    Cartao(1),
+    Cheque(2),
+    Transferencia(3),
+    Outros(4);
 
-    public static TipoPagamento Converter(int item){
-        return switch (item) {
-            case 1 -> TipoPagamento.Cartao;
-            case 2 -> TipoPagamento.Cheque;
-            case 3 -> TipoPagamento.Transferencia;
-            case 4 -> TipoPagamento.Outros;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    TipoPagamento(int value) {
+        this.value = value;
     }
 }
-

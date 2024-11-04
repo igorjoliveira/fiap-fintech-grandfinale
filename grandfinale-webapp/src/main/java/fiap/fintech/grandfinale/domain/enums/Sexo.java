@@ -1,14 +1,13 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum Sexo {
-    Masculino,
-    Feminino;
+    Masculino(1),
+    Feminino(2);
 
-    public static Sexo Converter(int item){
-        return switch (item) {
-            case 1 -> Sexo.Masculino;
-            case 2 -> Sexo.Feminino;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    Sexo(int value) {
+        this.value = value;
     }
 }

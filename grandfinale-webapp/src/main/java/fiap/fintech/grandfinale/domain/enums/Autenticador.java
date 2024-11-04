@@ -1,14 +1,13 @@
 package fiap.fintech.grandfinale.domain.enums;
 
 public enum Autenticador {
-    Interno,
-    Externo;
+    Interno(1),
+    Externo(2);
 
-    public static Autenticador Converter(int item){
-        return switch (item) {
-            case 1 -> Autenticador.Interno;
-            case 2 -> Autenticador.Externo;
-            default -> null;
-        };
+    private final int value;
+    public int getValue() { return this.value; }
+
+    Autenticador(int value) {
+        this.value = value;
     }
 }
