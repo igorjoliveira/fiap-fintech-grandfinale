@@ -157,4 +157,28 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
         stm.setInt(7, usuario.getAutenticador().getValue());
         stm.setString(8, usuario.getSenha());
     }
+
+    @Override
+    public Usuario findByEmail(String email) {
+        Usuario usuario = null;
+        try{
+            var cnn = this.getConnection();
+            if(cnn != null) {
+
+                var stm = cnn.prepareStatement("select * from usuario where EMAIL = ?");
+                stm.setString(1, email);
+                var result = stm.executeQuery();
+
+                if (!result.next()) {
+                    return readerUsuario(result);
+                }
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
+
+        return usuario;
+    }
 }

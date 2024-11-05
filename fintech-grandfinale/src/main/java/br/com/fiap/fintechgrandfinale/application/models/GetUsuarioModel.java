@@ -11,7 +11,6 @@ public class GetUsuarioModel {
     private Sexo sexo;
     private String nome;
     private String email;
-    private String senha;
     private String sobreNome;
     private LocalDate dataNascimento;
     private Boolean ativo;
@@ -49,14 +48,6 @@ public class GetUsuarioModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public String getSobreNome() {

@@ -6,7 +6,6 @@ import java.util.List;
 public interface IUsuarioService {
     void register(FormUsuarioModel formUsuario);
     GetUsuarioModel login(FormLoginModel formLogin);
-    void logout();
     GetControleFinanceiroModel createControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
     GetControleFinanceiroModel alterControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
     List<GetControleFinanceiroModel> getAllControleFinanceiro();

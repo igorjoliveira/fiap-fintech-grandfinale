@@ -10,7 +10,7 @@ import java.util.List;
 public class UsuarioService implements IUsuarioService {
     private IUsuarioRepository usuarioRepository;
 
-    UsuarioService(){
+    public UsuarioService(){
         this.usuarioRepository = new UsuarioRepository();
     }
 
@@ -21,12 +21,23 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public GetUsuarioModel login(FormLoginModel formLogin) {
+        var usuario = this.usuarioRepository.findByEmail(formLogin.getEmail());
+        if(usuario != null && usuario.getSenha().equals(formLogin.getSenha())){
+            var model = new GetUsuarioModel();
+            model.setCodigo(usuario.getCodigo());
+            model.setNome(usuario.getNome());
+            model.setSobreNome(usuario.getSobreNome());
+            model.setEmail(usuario.getEmail());
+            model.setSexo(usuario.getSexo());
+            model.setAtivo(usuario.getAtivo());
+            model.setAutenticador(usuario.getAutenticador());
+            model.setDataNascimento(usuario.getDataNascimento());
+            model.setDataHoraCadastro(usuario.getDataHoraCadastro());
+            model.setDataHoraAtualizacao(usuario.getDataHoraAtualizacao());
+
+            return model;
+        }
         return null;
-    }
-
-    @Override
-    public void logout() {
-
     }
 
     @Override
