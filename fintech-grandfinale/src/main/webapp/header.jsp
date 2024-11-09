@@ -18,7 +18,7 @@
               <img src="./resources/images/fintech-user.png" alt="user-image" width="32" class="rounded-circle">
           </span>
           <span class="d-lg-flex flex-column gap-1 d-none">
-            <h5 class="my-0">${sessionScope.usuarioLogado.nome}</h5>
+            <h5 class="my-0 text-uppercase">${sessionScope.usuarioLogado.nome}</h5>
             <h6 class="my-0 fw-normal">Dono</h6>
           </span>
         </a>
@@ -29,7 +29,7 @@
           </div>
 
           <!-- item-->
-          <a href="javascript:void(0);" class="dropdown-item">
+          <a href="detalhe.jsp" class="dropdown-item">
             <i class="mdi mdi-account-circle me-1"></i>
             <span>Minha conta</span>
           </a>

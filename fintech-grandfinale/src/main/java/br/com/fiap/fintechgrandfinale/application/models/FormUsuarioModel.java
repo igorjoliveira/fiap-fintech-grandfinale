@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public class FormUsuarioModel {
     private int codigo;
-    private Sexo sexo;
+    private int sexo;
     private String nome;
     private String email;
     private String senha;
@@ -24,11 +24,11 @@ public class FormUsuarioModel {
         this.codigo = codigo;
     }
 
-    public Sexo getSexo() {
+    public int getSexo() {
         return sexo;
     }
 
-    public void setSexo(Sexo sexo) {
+    public void setSexo(int sexo) {
         this.sexo = sexo;
     }
 

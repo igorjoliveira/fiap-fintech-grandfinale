@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 public class GetUsuarioModel {
     private int codigo;
-    private Sexo sexo;
+    private int sexo;
     private String nome;
     private String email;
     private String sobreNome;
@@ -26,11 +26,11 @@ public class GetUsuarioModel {
         this.codigo = codigo;
     }
 
-    public Sexo getSexo() {
+    public int getSexo() {
         return sexo;
     }
 
-    public void setSexo(Sexo sexo) {
+    public void setSexo(int sexo) {
         this.sexo = sexo;
     }
 

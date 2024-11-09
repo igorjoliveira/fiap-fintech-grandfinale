@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface IUsuarioService {
     void register(FormUsuarioModel formUsuario) throws SQLException;
+    void update(int codigo, FormUsuarioModel formUsuario);
     GetUsuarioModel login(FormLoginModel formLogin);
+    GetUsuarioModel getUser(int codigo);
     GetControleFinanceiroModel createControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
     GetControleFinanceiroModel alterControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
     List<GetControleFinanceiroModel> getAllControleFinanceiro();

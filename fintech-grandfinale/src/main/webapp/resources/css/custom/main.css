@@ -222,16 +222,6 @@ body {
     margin-left: calc(-.5 * var(--ct-gutter-x));
 }
 
-.row>* {
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 100%;
-    padding-right: calc(var(--ct-gutter-x) * .5);
-    padding-left: calc(var(--ct-gutter-x) * .5);
-    margin-top: var(--ct-gutter-y)
-}
-
 .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {
     margin-top: 0;
     margin-bottom: 10px;
@@ -287,4 +277,20 @@ body {
 a {
     color: rgba(var(--ct-link-color-rgb),var(--ct-link-opacity,1));
     text-decoration: none;
+}
+
+.mt-0 {
+    margin-top: 0 !important;
+}
+
+.ml-1 {
+    margin-left: .25rem !important;
+}
+
+.ml-2 {
+    margin-left: .5rem !important;
+}
+
+.ml-3 {
+    margin-left: .75rem !important;
 }

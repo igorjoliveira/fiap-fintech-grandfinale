@@ -8,7 +8,7 @@
 
 <div class="leftside-menu" data-simplebar>
 
-    <a href="index.html" class="logo">
+    <a href="index.jsp" class="logo">
         <span class="logo-lg">
             <h1>e<span class="logo">Financeiro</span></h1>
         </span>
@@ -24,7 +24,7 @@
             <div class="collapse show" id="sidebarDashboards">
                 <ul class="side-nav-second-level">
                     <li>
-                        <a href="dashboard.health.component.html">
+                        <a href="#">
                             <span class="badge text-bg-secondary float-end">ON</span>
                             <span>Saúde Financeira</span>
                         </a>
@@ -81,7 +81,7 @@
                         <a href="#">Forma de Pagamento</a>
                     </li>
                     <li>
-                        <a href="despesa.component.html">
+                        <a href="#">
                             <span class="badge text-bg-secondary float-end">ON</span>
                             <span>Controle</span>
                         </a>

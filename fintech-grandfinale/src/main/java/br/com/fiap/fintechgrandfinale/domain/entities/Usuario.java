@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
 
 public class Usuario extends BaseModel {
     private Sexo sexo;
@@ -46,12 +47,39 @@ public class Usuario extends BaseModel {
     }
     public List<ControleFinanceiro> getControleFinanceiroLista() { return controleFinanceiroLista; }
 
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    public void setSobreNome(String sobreNome) {
+        this.sobreNome = sobreNome;
+    }
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+    public void setAutenticador(Autenticador autenticador) {
+        this.autenticador = autenticador;
+    }
+    public void setControleFinanceiroLista(List<ControleFinanceiro> controleFinanceiroLista) {
+        this.controleFinanceiroLista = controleFinanceiroLista;
+    }
+
     public Usuario(){
         super();
         this.controleFinanceiroLista = new ArrayList<>();
     }
-
-    public Usuario(String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, String email){
+    public Usuario(String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, String email, Autenticador autenticador, String senha){
         this();
         this.nome = nome;
         this.sobreNome = sobreNome;
@@ -59,33 +87,24 @@ public class Usuario extends BaseModel {
         this.dataNascimento = dataNascimento;
         this.email = email;
         this.ativo = true;
+        this.autenticador = autenticador;
+        this.senha = senha;
         this.setDataHoraCadastro(LocalDateTime.now());
     }
-
-    public Usuario carregarUsuario(int codigo, String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, Boolean ativo, String email, Autenticador autenticador, String senha, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraModificacao){
-        this.setCodigo(codigo);
-        this.setDataHoraCadastro(dataHoraCadastro);
-        this.setDataHoraAtualizacao(dataHoraModificacao);
-
+    public Usuario(int codigo, String nome, String sobreNome, Sexo sexo, LocalDate dataNascimento, String email, Boolean ativo, Autenticador autenticador, String senha, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao){
+        super(codigo, dataHoraCadastro, dataHoraAtualizacao);
         this.nome = nome;
         this.sobreNome = sobreNome;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
-        this.ativo = ativo;
         this.email = email;
-        this.ativo = true;
-        definirAutenticador(autenticador, senha);
-
-        return this;
-    }
-
-    public Usuario definirAutenticador(Autenticador autenticador, String senha){
+        this.ativo = ativo;
         this.autenticador = autenticador;
         this.senha = senha;
-        return this;
     }
-    public Boolean validarCredencial(String email, String senha){
-        return this.email.equals(email)
+
+    public Boolean validarCredencial(String senha){
+        return this.ativo
                 && (this.autenticador == Autenticador.Interno && this.senha.equals(senha)
                 || this.autenticador == Autenticador.Externo && senha == null);
     }

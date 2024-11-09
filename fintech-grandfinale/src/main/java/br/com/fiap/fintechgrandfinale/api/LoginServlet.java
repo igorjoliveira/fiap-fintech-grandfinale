@@ -19,7 +19,6 @@ public class LoginServlet extends HttpServlet {
     public void init() throws ServletException {
         this.usuarioService = new UsuarioService();
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

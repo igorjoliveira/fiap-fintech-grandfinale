@@ -11,11 +11,16 @@ public abstract class BaseModel{
     public BaseModel() {
         this.setCodigo((new Random().nextInt(100)) + 1);
     }
+    public BaseModel(int codigo, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao) {
+        this.codigo = codigo;
+        this.dataHoraCadastro = dataHoraCadastro;
+        this.dataHoraAtualizacao = dataHoraAtualizacao;
+    }
 
     public int getCodigo() { return this.codigo; }
-    protected void setCodigo(int codigo) { this.codigo = codigo; }
     public LocalDateTime getDataHoraCadastro() { return dataHoraCadastro; }
     public LocalDateTime getDataHoraAtualizacao() { return dataHoraAtualizacao; }
-    protected void setDataHoraCadastro(LocalDateTime dataHoraCadastro) { this.dataHoraCadastro = dataHoraCadastro; }
-    protected void setDataHoraAtualizacao(LocalDateTime dataHoraAtualizacao) { this.dataHoraAtualizacao = dataHoraAtualizacao; }
+    public void setCodigo(int codigo) { this.codigo = codigo; }
+    public void setDataHoraCadastro(LocalDateTime dataHoraCadastro) { this.dataHoraCadastro = dataHoraCadastro; }
+    public void setDataHoraAtualizacao(LocalDateTime dataHoraAtualizacao) { this.dataHoraAtualizacao = dataHoraAtualizacao; }
 }

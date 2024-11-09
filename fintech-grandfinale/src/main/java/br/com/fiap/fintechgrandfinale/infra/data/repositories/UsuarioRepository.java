@@ -47,7 +47,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                 stm.setInt(1, id);
                 var result = stm.executeQuery();
 
-                if (!result.next()) {
+                if (result.next()) {
                     return readerUsuario(result);
                 }
             }
@@ -71,6 +71,9 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             createParams(usuario, stm);
+            stm.setBoolean(6, usuario.getAtivo());
+            stm.setInt(7, usuario.getAutenticador().getValue());
+            stm.setString(8, usuario.getSenha());
             stm.setTimestamp(9, java.sql.Timestamp.valueOf(usuario.getDataHoraCadastro()));
 
             stm.executeUpdate();
@@ -94,15 +97,12 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                         "SEXO_CODIGO=?, " +
                         "DATA_NASCIMENTO=?, " +
                         "EMAIL=?, " +
-                        "ATIVO=?, " +
-                        "AUTENTICADOR=?, " +
-                        "SENHA=?, " +
                         "DATA_HORA_ATUALIZACAO=? " +
                         "WHERE CODIGO=?");
 
                 createParams(usuario, stm);
-                stm.setTimestamp(9, java.sql.Timestamp.valueOf(usuario.getDataHoraAtualizacao()));
-                stm.setInt(10, usuario.getCodigo());
+                stm.setTimestamp(6, java.sql.Timestamp.valueOf(usuario.getDataHoraAtualizacao()));
+                stm.setInt(7, usuario.getCodigo());
                 stm.executeUpdate();
             } catch(RuntimeException | SQLException e){
                 throw new RuntimeException(e);
@@ -135,13 +135,13 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
         var autenticador = EnumUtils.fromValue(Autenticador.class, result.getInt("AUTENTICADOR"));
         var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
 
-        return new Usuario().carregarUsuario(result.getInt("CODIGO"),
+        return new Usuario(result.getInt("CODIGO"),
                 result.getString("NOME"),
                 result.getString("SOBRENOME"),
                 sexo,
                 result.getDate("DATA_NASCIMENTO").toLocalDate(),
-                result.getBoolean("ATIVO"),
                 result.getString("EMAIL"),
+                result.getBoolean("ATIVO"),
                 autenticador,
                 result.getString("SENHA"),
                 result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime(),
@@ -154,9 +154,6 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
         stm.setInt(3, usuario.getSexo().getValue());
         stm.setDate(4, java.sql.Date.valueOf(usuario.getDataNascimento()));
         stm.setString(5, usuario.getEmail());
-        stm.setBoolean(6, usuario.getAtivo());
-        stm.setInt(7, usuario.getAutenticador().getValue());
-        stm.setString(8, usuario.getSenha());
     }
 
     @Override

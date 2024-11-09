@@ -4,8 +4,6 @@ import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioSe
 import br.com.fiap.fintechgrandfinale.application.models.FormUsuarioModel;
 import br.com.fiap.fintechgrandfinale.application.services.UsuarioService;
 import br.com.fiap.fintechgrandfinale.domain.enums.Autenticador;
-import br.com.fiap.fintechgrandfinale.domain.enums.Sexo;
-import br.com.fiap.fintechgrandfinale.domain.utils.EnumUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,16 +23,13 @@ public class RegisterServlet extends HttpServlet {
     public void init() throws ServletException {
         this.usuarioService = new UsuarioService();
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try{
-            // Get the form data
             String nome = request.getParameter("nome");
             String sobreNome = request.getParameter("sobreNome");
             String email = request.getParameter("email");
             String senha = request.getParameter("senha");
-            int sexo = Integer.parseInt(request.getParameter("sexo"));
             String dataNascimentoStr = request.getParameter("dataNascimento");
 
             var usuario = new FormUsuarioModel();
@@ -42,7 +37,7 @@ public class RegisterServlet extends HttpServlet {
             usuario.setSobreNome(sobreNome);
             usuario.setEmail(email);
             usuario.setSenha(senha);
-            usuario.setSexo(EnumUtils.fromValue(Sexo.class, sexo));
+            usuario.setSexo(Integer.parseInt(request.getParameter("sexo")));
             usuario.setDataNascimento(LocalDate.parse(dataNascimentoStr));
             usuario.setAtivo(true);
             usuario.setAutenticador(Autenticador.Interno);
