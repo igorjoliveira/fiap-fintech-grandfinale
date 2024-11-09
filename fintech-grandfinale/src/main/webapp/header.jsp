@@ -14,13 +14,13 @@
     <ul class="topbar-menu d-flex align-items-center gap-3">
       <li class="dropdown profile">
         <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <span class="account-user-avatar">
-                        <img src="./resources/images/fintech-user.png" alt="user-image" width="32" class="rounded-circle">
-                    </span>
+          <span class="account-user-avatar">
+              <img src="./resources/images/fintech-user.png" alt="user-image" width="32" class="rounded-circle">
+          </span>
           <span class="d-lg-flex flex-column gap-1 d-none">
-                        <h5 class="my-0">Igor Oliveira</h5>
-                        <h6 class="my-0 fw-normal">Dono</h6>
-                    </span>
+            <h5 class="my-0">${sessionScope.usuarioLogado.nome}</h5>
+            <h6 class="my-0 fw-normal">Dono</h6>
+          </span>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
           <!-- item-->
@@ -35,13 +35,12 @@
           </a>
 
           <!-- item-->
-          <a href="login.component.html" class="dropdown-item">
+          <a href="logout-servlet" class="dropdown-item">
             <i class="mdi mdi-logout me-1"></i>
             <span>Sair</span>
           </a>
         </div>
       </li>
-
     </ul>
   </div>
 </header>

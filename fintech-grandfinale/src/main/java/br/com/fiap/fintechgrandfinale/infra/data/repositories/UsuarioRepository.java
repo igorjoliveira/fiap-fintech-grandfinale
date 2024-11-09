@@ -133,6 +133,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
 
         var sexo = EnumUtils.fromValue(Sexo.class, result.getInt("SEXO_CODIGO"));
         var autenticador = EnumUtils.fromValue(Autenticador.class, result.getInt("AUTENTICADOR"));
+        var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
 
         return new Usuario().carregarUsuario(result.getInt("CODIGO"),
                 result.getString("NOME"),
@@ -144,7 +145,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                 autenticador,
                 result.getString("SENHA"),
                 result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime(),
-                result.getTimestamp("DATA_HORA_ATUALIZACAO").toLocalDateTime());
+                dataHoraAtualizacao != null ? dataHoraAtualizacao.toLocalDateTime() : null);
     }
 
     private void createParams(Usuario usuario, PreparedStatement stm) throws SQLException {
@@ -169,7 +170,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                 stm.setString(1, email);
                 var result = stm.executeQuery();
 
-                if (!result.next()) {
+                if (result.next()) {
                     return readerUsuario(result);
                 }
             }

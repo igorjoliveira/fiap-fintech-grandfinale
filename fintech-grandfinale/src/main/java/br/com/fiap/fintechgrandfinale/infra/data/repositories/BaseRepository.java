@@ -26,11 +26,14 @@ public abstract class BaseRepository<TEntity> implements IBaseRepository<TEntity
     protected Connection getConnection(){
         try {
             if(connection == null || connection.isClosed()){
+                Class.forName("oracle.jdbc.driver.OracleDriver");
                 connection = DriverManager.getConnection(getConnectionString(), user, password);
             }
 
             return connection;
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

@@ -2,9 +2,12 @@ package br.com.fiap.fintechgrandfinale.application.services;
 
 import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioService;
 import br.com.fiap.fintechgrandfinale.application.models.*;
+import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
+import br.com.fiap.fintechgrandfinale.domain.enums.Autenticador;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IUsuarioRepository;
 import br.com.fiap.fintechgrandfinale.infra.data.repositories.UsuarioRepository;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UsuarioService implements IUsuarioService {
@@ -15,8 +18,12 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public void register(FormUsuarioModel formUsuario) {
+    public void register(FormUsuarioModel formUsuario) throws SQLException {
 
+        var usuario = new Usuario(formUsuario.getNome(), formUsuario.getSobreNome(), formUsuario.getSexo(), formUsuario.getDataNascimento(), formUsuario.getEmail());
+        usuario.definirAutenticador(Autenticador.Interno, formUsuario.getSenha());
+
+        this.usuarioRepository.insert(usuario);
     }
 
     @Override

@@ -1,5 +1,16 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+<%@ page session="true" %>
+
+<%
+  var user = session.getAttribute("usuarioLogado");
+  if (user == null) {
+    response.sendRedirect("login.jsp");
+    return;
+  }
+%>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
