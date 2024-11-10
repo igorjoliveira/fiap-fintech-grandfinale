@@ -4,12 +4,12 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <%@ page import="br.com.fiap.fintechgrandfinale.domain.utils.DateUtils" %>
 
-<div id="update-content">
+<div id="content-grupo">
   <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-body">
-          <form id="filtroForm" method="get" action="controlefinanceiro-servlet" class="d-inline">
+          <form id="grupoFiltroForm" class="d-inline">
             <div class="row">
               <div class="col-md-12">
                 <label for="filtro_descricao" class="form-label">Descrição</label>
@@ -19,7 +19,7 @@
 
             <div class="row mt-2">
               <div class="col-12 d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#modalEdit" onclick="clearForm()">Incluir</button>
+                <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#grupoModal" onclick="clearForm()">Incluir</button>
                 <button type="submit" class="btn btn-sm btn-success">Buscar</button>
               </div>
             </div>
@@ -64,7 +64,7 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal fade" id="grupoModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -72,7 +72,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="formControleFinanceiro" action="controlefinanceiro-servlet" method="POST">
+          <form id="grupoForm" action="controlefinanceiro-servlet" method="POST">
             <div class="row mb-3">
               <div class="col-md-12">
                 <label for="descricao" class="form-label">Descrição</label>
@@ -87,17 +87,17 @@
   </div>
   <script>
       function clearForm() {
-          document.getElementById('formControleFinanceiro').reset();
+          document.getElementById('grupoForm').reset();
           document.getElementById('descricao').value = "";
       }
 
-      $('#filtroForm').submit(function(event) {
+      $('#grupoFiltroForm').submit(function(event) {
           event.preventDefault();
 
           var filter = $('input[name="filtro_descricao"]').val();
 
           $.get('controlefinanceiro-servlet', { filtro_descricao: filter }, function(response) {
-              $('#update-content').html(response);
+              $('#content-grupo').html(response);
               $('#filtro_descricao').val(filter);
           });
       });
