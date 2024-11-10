@@ -29,7 +29,7 @@
           </div>
 
           <!-- item-->
-          <a href="detalhe.jsp" class="dropdown-item">
+          <a href="usuario-servlet" class="dropdown-item">
             <i class="mdi mdi-account-circle me-1"></i>
             <span>Minha conta</span>
           </a>

@@ -1,4 +1,4 @@
-package br.com.fiap.fintechgrandfinale.api;
+package br.com.fiap.fintechgrandfinale.controllers;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

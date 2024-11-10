@@ -67,7 +67,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
             if(cnn == null)
                 return 0;
 
-            var stm = cnn.prepareStatement("INSERT INTO USUARIO (NOME, SOBRENOME, SEXO_CODIGO, DATA_NASCIMENTO, EMAIL, ATIVO, AUTENTICADOR, SENHA, DATA_HORA_CADASTRO) "
+            var stm = cnn.prepareStatement("INSERT INTO USUARIO (NOME, SOBRENOME, CODIGO_SEXO, DATA_NASCIMENTO, EMAIL, ATIVO, CODIGO_AUTENTICADOR, SENHA, DATA_HORA_CADASTRO) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             createParams(usuario, stm);
@@ -94,7 +94,7 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
                 var stm = cnn.prepareStatement("UPDATE USUARIO SET " +
                         "NOME=?, " +
                         "SOBRENOME=?, " +
-                        "SEXO_CODIGO=?, " +
+                        "CODIGO_SEXO=?, " +
                         "DATA_NASCIMENTO=?, " +
                         "EMAIL=?, " +
                         "DATA_HORA_ATUALIZACAO=? " +
@@ -129,33 +129,6 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
 
     }
 
-    private Usuario readerUsuario(ResultSet result) throws SQLException {
-
-        var sexo = EnumUtils.fromValue(Sexo.class, result.getInt("SEXO_CODIGO"));
-        var autenticador = EnumUtils.fromValue(Autenticador.class, result.getInt("AUTENTICADOR"));
-        var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
-
-        return new Usuario(result.getInt("CODIGO"),
-                result.getString("NOME"),
-                result.getString("SOBRENOME"),
-                sexo,
-                result.getDate("DATA_NASCIMENTO").toLocalDate(),
-                result.getString("EMAIL"),
-                result.getBoolean("ATIVO"),
-                autenticador,
-                result.getString("SENHA"),
-                result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime(),
-                dataHoraAtualizacao != null ? dataHoraAtualizacao.toLocalDateTime() : null);
-    }
-
-    private void createParams(Usuario usuario, PreparedStatement stm) throws SQLException {
-        stm.setString(1, usuario.getNome());
-        stm.setString(2, usuario.getSobreNome());
-        stm.setInt(3, usuario.getSexo().getValue());
-        stm.setDate(4, java.sql.Date.valueOf(usuario.getDataNascimento()));
-        stm.setString(5, usuario.getEmail());
-    }
-
     @Override
     public Usuario findByEmail(String email) {
         Usuario usuario = null;
@@ -178,5 +151,32 @@ public class UsuarioRepository extends BaseRepository<Usuario> implements IUsuar
         }
 
         return usuario;
+    }
+
+    private Usuario readerUsuario(ResultSet result) throws SQLException {
+
+        var sexo = EnumUtils.fromValue(Sexo.class, result.getInt("CODIGO_SEXO"));
+        var autenticador = EnumUtils.fromValue(Autenticador.class, result.getInt("CODIGO_AUTENTICADOR"));
+        var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
+
+        return new Usuario(result.getInt("CODIGO"),
+                result.getString("NOME"),
+                result.getString("SOBRENOME"),
+                sexo,
+                result.getDate("DATA_NASCIMENTO").toLocalDate(),
+                result.getString("EMAIL"),
+                result.getBoolean("ATIVO"),
+                autenticador,
+                result.getString("SENHA"),
+                result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime(),
+                dataHoraAtualizacao != null ? dataHoraAtualizacao.toLocalDateTime() : null);
+    }
+
+    private void createParams(Usuario usuario, PreparedStatement stm) throws SQLException {
+        stm.setString(1, usuario.getNome());
+        stm.setString(2, usuario.getSobreNome());
+        stm.setInt(3, usuario.getSexo().getValue());
+        stm.setDate(4, java.sql.Date.valueOf(usuario.getDataNascimento()));
+        stm.setString(5, usuario.getEmail());
     }
 }

@@ -1,20 +1,11 @@
 package br.com.fiap.fintechgrandfinale.application.interfaces.services;
 
-import br.com.fiap.fintechgrandfinale.application.models.*;
-
+import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
 import java.sql.SQLException;
-import java.util.List;
 
 public interface IUsuarioService {
-    void register(FormUsuarioModel formUsuario) throws SQLException;
-    void update(int codigo, FormUsuarioModel formUsuario);
-    GetUsuarioModel login(FormLoginModel formLogin);
-    GetUsuarioModel getUser(int codigo);
-    GetControleFinanceiroModel createControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
-    GetControleFinanceiroModel alterControleFinanceiro(FormControleFinanceiroModel formControleFinanceiro);
-    List<GetControleFinanceiroModel> getAllControleFinanceiro();
-    GetControleFinanceiroModel getControleFinanceiro();
-    void addParticipante(FormParticipanteModel formParticipante);
-    void alterParticipante(FormParticipanteModel formParticipante);
-    List<GetParticipanteModel> getAllParticipante(FormControleFinanceiroModel formControleFinanceiro);
+    void register(Usuario form) throws SQLException;
+    void update(int codigo, Usuario form);
+    Usuario login(String username, String password);
+    Usuario getUser(int codigo);
 }

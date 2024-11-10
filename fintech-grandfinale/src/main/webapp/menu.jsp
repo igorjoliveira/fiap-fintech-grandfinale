@@ -42,49 +42,25 @@
         <li class="side-nav-title">Gerenciamento</li>
 
         <li class="side-nav-item">
-            <a href="#" class="side-nav-link">
+            <a href="controleFinanceiro.jsp" class="side-nav-link">
                 <i class="uil-user-circle"></i>
-                <span> Participante (s) </span>
+                <span> Controle Financeiro </span>
             </a>
         </li>
 
         <li class="side-nav-item">
-            <a data-bs-toggle="collapse" href="#sidebarCrm" aria-expanded="false" aria-controls="sidebarCrm" class="side-nav-link">
+            <a data-bs-toggle="collapse" href="#sidebarFinanceiro" aria-expanded="true" aria-controls="sidebarFinanceiro" class="side-nav-link">
                 <i class="uil-money-withdraw"></i>
-                <span> Recebimentos </span>
+                <span> Fluxo de caixa</span>
                 <span class="menu-arrow"></span>
             </a>
-            <div class="collapse" id="sidebarCrm">
+            <div class="collapse show" id="sidebarFinanceiro">
                 <ul class="side-nav-second-level">
                     <li>
-                        <a href="#">Tipo de Renda</a>
+                        <a href="receita.jsp">Receita</a>
                     </li>
                     <li>
-                        <a href="#">Renda</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-
-        <li class="side-nav-item">
-            <a data-bs-toggle="collapse" href="#sidebarEcommerce" aria-expanded="true" aria-controls="sidebarEcommerce" class="side-nav-link">
-                <i class="uil-shopping-cart-alt"></i>
-                <span> Despesas </span>
-                <span class="menu-arrow"></span>
-            </a>
-            <div class="collapse show" id="sidebarEcommerce">
-                <ul class="side-nav-second-level">
-                    <li>
-                        <a href="#">Tipo de Despesa</a>
-                    </li>
-                    <li>
-                        <a href="#">Forma de Pagamento</a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span class="badge text-bg-secondary float-end">ON</span>
-                            <span>Controle</span>
-                        </a>
+                        <a href="despesa.jsp">Despesa</a>
                     </li>
                 </ul>
             </div>

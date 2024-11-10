@@ -1,9 +1,11 @@
-package br.com.fiap.fintechgrandfinale.api;
+package br.com.fiap.fintechgrandfinale.controllers;
 
 import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioService;
-import br.com.fiap.fintechgrandfinale.application.models.FormUsuarioModel;
 import br.com.fiap.fintechgrandfinale.application.services.UsuarioService;
+import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
 import br.com.fiap.fintechgrandfinale.domain.enums.Autenticador;
+import br.com.fiap.fintechgrandfinale.domain.enums.Sexo;
+import br.com.fiap.fintechgrandfinale.domain.utils.EnumUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -32,15 +34,13 @@ public class RegisterServlet extends HttpServlet {
             String senha = request.getParameter("senha");
             String dataNascimentoStr = request.getParameter("dataNascimento");
 
-            var usuario = new FormUsuarioModel();
-            usuario.setNome(nome);
-            usuario.setSobreNome(sobreNome);
-            usuario.setEmail(email);
-            usuario.setSenha(senha);
-            usuario.setSexo(Integer.parseInt(request.getParameter("sexo")));
-            usuario.setDataNascimento(LocalDate.parse(dataNascimentoStr));
-            usuario.setAtivo(true);
-            usuario.setAutenticador(Autenticador.Interno);
+            var usuario = new Usuario(nome,
+            sobreNome,
+            EnumUtils.fromValue(Sexo.class, Integer.parseInt(request.getParameter("sexo"))),
+            LocalDate.parse(dataNascimentoStr),
+            email,
+            Autenticador.Interno,
+            senha);
 
             this.usuarioService.register(usuario);
 

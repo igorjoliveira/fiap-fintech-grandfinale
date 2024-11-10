@@ -85,8 +85,8 @@
                   <div class="form-group">
                     <label for="sexo">Sexo</label>
                     <select class="form-control" id="sexo" name="sexo" required>
-                      <option value="1" <c:if test="${sessionScope.usuarioLogado.sexo == 1}">selected</c:if>>Masculino</option>
-                      <option value="2" <c:if test="${sessionScope.usuarioLogado.sexo == 2}">selected</c:if>>Feminino</option>
+                      <option value="1" <c:if test="${sessionScope.usuarioLogado.getSexo().getValue() == 1}">selected</c:if>>Masculino</option>
+                      <option value="2" <c:if test="${sessionScope.usuarioLogado.getSexo().getValue() == 2}">selected</c:if>>Feminino</option>
                     </select>
                   </div>
                 </div>
@@ -101,7 +101,7 @@
               <div class="row mb-2">
                 <div class="col-md-12 d-flex flex-row-reverse">
                   <a type="button" class="btn btn-sm btn-primary ml-2" href="javascript:void(0);" onclick="sendPost()">Salvar</a>
-                  <a type="button" class="btn btn-sm btn-secondary ml-2" href="detalhe.jsp">Cancelar</a>
+                  <a type="button" class="btn btn-sm btn-secondary ml-2" href="minhaConta.jsp">Cancelar</a>
                 </div>
               </div>
             </form>

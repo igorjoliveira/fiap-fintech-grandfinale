@@ -1,7 +1,6 @@
-package br.com.fiap.fintechgrandfinale.api;
+package br.com.fiap.fintechgrandfinale.controllers;
 
 import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioService;
-import br.com.fiap.fintechgrandfinale.application.models.FormLoginModel;
 import br.com.fiap.fintechgrandfinale.application.services.UsuarioService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,11 +21,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        var credencial = new FormLoginModel();
-        credencial.setEmail(request.getParameter("email"));
-        credencial.setSenha(request.getParameter("senha"));
-
-        var usuario = usuarioService.login(credencial);
+        var usuario = usuarioService.login(request.getParameter("email"), request.getParameter("senha"));
         if(usuario != null && usuario.getCodigo() > 0) {
             var session = request.getSession();
             session.setAttribute("usuarioLogado", usuario);

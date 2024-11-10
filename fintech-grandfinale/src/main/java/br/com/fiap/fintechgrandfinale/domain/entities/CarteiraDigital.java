@@ -12,24 +12,41 @@ public class CarteiraDigital extends BaseModel {
     private InstituicaoFinanceira instituicaoFinanceira;
     private Boolean ativo;
     private List<FormaPagamento> formaPagamentoLista;
+    private Participante participante;
 
-    public Boolean getAtivo() {
-        return ativo;
+    public int getCodigoParticipanteControleFinanceiro() {
+        return codigoParticipanteControleFinanceiro;
     }
     public InstituicaoFinanceira getInstituicaoFinanceira() {
         return instituicaoFinanceira;
     }
-    public int getCodigoParticipanteControleFinanceiro() {
-        return codigoParticipanteControleFinanceiro;
+    public Boolean getAtivo() {
+        return ativo;
     }
-    public List<FormaPagamento> getFormaPagamentoLista() { return formaPagamentoLista; }
+    public List<FormaPagamento> getFormaPagamentoLista() {
+        return formaPagamentoLista;
+    }
+    public Participante getParticipante() {
+        return participante;
+    }
 
+    public void setCodigoParticipanteControleFinanceiro(int codigoParticipanteControleFinanceiro) {
+        this.codigoParticipanteControleFinanceiro = codigoParticipanteControleFinanceiro;
+    }
+    public void setInstituicaoFinanceira(InstituicaoFinanceira instituicaoFinanceira) {
+        this.instituicaoFinanceira = instituicaoFinanceira;
+    }
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
-        this.setDataHoraAtualizacao(LocalDateTime.now());
+    }
+    public void setFormaPagamentoLista(List<FormaPagamento> formaPagamentoLista) {
+        this.formaPagamentoLista = formaPagamentoLista;
+    }
+    public void setParticipante(Participante participante) {
+        this.participante = participante;
     }
 
-    private CarteiraDigital(){
+    public CarteiraDigital(){
         super();
         this.formaPagamentoLista = new ArrayList<>();
     }
@@ -39,6 +56,12 @@ public class CarteiraDigital extends BaseModel {
         this.instituicaoFinanceira = instituicaoFinanceira;
         this.setDataHoraCadastro(LocalDateTime.now());
         this.ativo = true;
+    }
+    public CarteiraDigital(int codigo, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao, int codigoParticipanteControleFinanceiro, InstituicaoFinanceira instituicaoFinanceira, Boolean ativo) {
+        super(codigo, dataHoraCadastro, dataHoraAtualizacao);
+        this.codigoParticipanteControleFinanceiro = codigoParticipanteControleFinanceiro;
+        this.instituicaoFinanceira = instituicaoFinanceira;
+        this.ativo = ativo;
     }
 
     public FormaPagamento adicionarCartaoCredito(String numero, String nome, String dataVencimento, String codigoSeguranca){

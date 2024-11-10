@@ -12,7 +12,7 @@ public class ControleFinanceiro extends BaseModel {
     private Boolean ativo;
     private List<Participante> participanteLista;
 
-    private ControleFinanceiro(){
+    public ControleFinanceiro(){
         super();
         this.participanteLista = new ArrayList<>();
     }
@@ -22,12 +22,26 @@ public class ControleFinanceiro extends BaseModel {
         this.ativo = true;
         this.setDataHoraCadastro(LocalDateTime.now());
     }
+    public ControleFinanceiro(int codigo, String descricao, Boolean ativo, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao) {
+        super(codigo, dataHoraCadastro, dataHoraAtualizacao);
+        this.descricao = descricao;
+        this.ativo = ativo;
+    }
 
     public Boolean getAtivo() { return ativo; }
     public String getDescricao() {
         return descricao;
     }
     public List<Participante> getParticipanteLista() { return participanteLista; }
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+    public void setParticipanteLista(List<Participante> participanteLista) {
+        this.participanteLista = participanteLista;
+    }
 
     public ControleFinanceiro adicionarParticipante(int codigoUsuario, Boolean proprietario) throws EntradaDadoInvalidaException {
         for (var participante : this.participanteLista){

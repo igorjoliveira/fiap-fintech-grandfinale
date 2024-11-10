@@ -11,8 +11,11 @@ public abstract class BaseModel{
     public BaseModel() {
         this.setCodigo((new Random().nextInt(100)) + 1);
     }
-    public BaseModel(int codigo, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao) {
+    public BaseModel(int codigo) {
         this.codigo = codigo;
+    }
+    public BaseModel(int codigo, LocalDateTime dataHoraCadastro, LocalDateTime dataHoraAtualizacao) {
+        this(codigo);
         this.dataHoraCadastro = dataHoraCadastro;
         this.dataHoraAtualizacao = dataHoraAtualizacao;
     }

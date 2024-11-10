@@ -1,19 +1,17 @@
 package br.com.fiap.fintechgrandfinale.domain.utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class DateUtils {
-    // Default date format
     private static final String DEFAULT_FORMAT = "dd/MM/yyyy";
 
-    // Method to convert a date string to LocalDate
     public static LocalDate parseDate(String dateString) {
         return parseDate(dateString, DEFAULT_FORMAT);
     }
 
-    // Method to convert a date string to LocalDate with custom format
     public static LocalDate parseDate(String dateString, String format) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
         try {
@@ -21,5 +19,13 @@ public class DateUtils {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Error parsing date: " + dateString + ". Expected format: " + format, e);
         }
+    }
+
+    public static String formatLocalDateTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        return localDateTime.format(formatter);
     }
 }
