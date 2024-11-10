@@ -26,7 +26,7 @@ public class ParticipanteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
 
-        var grupos = this.controleFinanceiroService.getAllControleFinanceiro(usuario.getCodigo());
+        var grupos = this.controleFinanceiroService.getAllControleFinanceiro(usuario.getCodigo(), null);
         var participantes = this.controleFinanceiroService.getAllParticipante(usuario.getCodigo(), 0, "", "");
 
         var model = new ParticipanteModel();

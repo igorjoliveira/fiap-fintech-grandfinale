@@ -52,13 +52,13 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
     }
 
     @Override
-    public List<ControleFinanceiro> getAll(int codigoUsuario) {
+    public List<ControleFinanceiro> getAll(int codigoUsuario, String descricao) {
         var list = new ArrayList<ControleFinanceiro>();
         try{
             var cnn = this.getConnection();
             if(cnn != null) {
 
-                var stm = cnn.prepareStatement("select " +
+                var query = "select " +
                         "a.codigo                as CONTROLEFINANCEIRO_CODIGO, " +
                         "a.descricao             as CONTROLEFINANCEIRO_DESCRICAO, " +
                         "a.ativo                 as CONTROLEFINANCEIRO_ATIVO, " +
@@ -69,11 +69,22 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
                         "b.codigo_usuario        as USUARIO_CODIGO " +
                         "FROM controle_financeiro a " +
                         "inner join participante b on a.codigo = b.codigo_controle_financeiro " +
-                        "where b.codigo_usuario = ? " +
-                        "order by a.codigo");
-                stm.setInt(1, codigoUsuario);
-                var result = stm.executeQuery();
+                        "where b.codigo_usuario = ? ";
 
+                if (descricao != null && !descricao.trim().isEmpty()) {
+                    query += "AND UPPER(a.descricao) LIKE UPPER(?) ";
+                }
+
+                query += "ORDER BY a.codigo";
+
+                var stm = cnn.prepareStatement(query);
+                stm.setInt(1, codigoUsuario);
+
+                if (descricao != null && !descricao.trim().isEmpty()) {
+                    stm.setString(2, "%" + descricao + "%");
+                }
+
+                var result = stm.executeQuery();
                 while (result.next()) {
                     var dataHoraAtualizacao = result.getTimestamp("CONTROLEFINANCEIRO_DATAHORA_ATUALIZACAO");
                     var controleFinanceiro = new ControleFinanceiro(result.getInt("CONTROLEFINANCEIRO_CODIGO"),

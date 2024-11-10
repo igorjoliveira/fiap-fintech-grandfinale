@@ -5,14 +5,10 @@ import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
 import java.util.List;
 
 public class ControleFinanceiroModel {
-    private int abaAtiva;
     private List<ControleFinanceiro> grupos;
     private ParticipanteModel participanteModel;
     private CarteiraDigitalModel carteiraDigitalModel;
 
-    public int getAbaAtiva() {
-        return abaAtiva;
-    }
     public List<ControleFinanceiro> getGrupos() {
         return grupos;
     }
@@ -23,9 +19,6 @@ public class ControleFinanceiroModel {
         return carteiraDigitalModel;
     }
 
-    public void setAbaAtiva(int abaAtiva) {
-        this.abaAtiva = abaAtiva;
-    }
     public void setGrupos(List<ControleFinanceiro> grupos) {
         this.grupos = grupos;
     }

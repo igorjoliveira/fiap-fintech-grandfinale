@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IControleFinanceiroService {
     ControleFinanceiro getControleFinanceiro(int codigoUsuario, int codigo);
-    List<ControleFinanceiro> getAllControleFinanceiro(int codigoUsuario);
+    List<ControleFinanceiro> getAllControleFinanceiro(int codigoUsuario, String descricao);
     List<Participante> getAllParticipante(int codigoUsuario, int codigoControleFinanceiro, String nome, String email);
     List<CarteiraDigital> getAllCarteiraDigital(int codigoUsuario);
     void insertControleFinanceiro(int codigoUsuario, ControleFinanceiro form) throws SQLException;

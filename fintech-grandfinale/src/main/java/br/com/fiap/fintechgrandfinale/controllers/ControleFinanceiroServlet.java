@@ -27,15 +27,13 @@ public class ControleFinanceiroServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
-        var descricao = req.getParameter("filtro_descricao");
-        var grupos = this.controleFinanceiroService.getAllControleFinanceiro(usuario.getCodigo());
+        var grupos = this.controleFinanceiroService.getAllControleFinanceiro(usuario.getCodigo(), req.getParameter("filtro_descricao"));
 
         var model = new ControleFinanceiroModel();
         model.setGrupos(grupos);
-        model.setAbaAtiva(1);
 
         req.setAttribute("model", model);
-        req.getRequestDispatcher("/controleFinanceiro.jsp").forward(req, resp);
+        req.getRequestDispatcher("/controleFinanceiro-grupo-view.jsp").forward(req, resp);
     }
 
     @Override

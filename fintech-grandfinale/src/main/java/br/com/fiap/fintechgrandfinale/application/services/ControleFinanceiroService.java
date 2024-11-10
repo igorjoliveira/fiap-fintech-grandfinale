@@ -31,8 +31,8 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     }
 
     @Override
-    public List<ControleFinanceiro> getAllControleFinanceiro(int codigoUsuario) {
-        var lista = this.controleFinanceiroRepository.getAll(codigoUsuario);
+    public List<ControleFinanceiro> getAllControleFinanceiro(int codigoUsuario, String descricao) {
+        var lista = this.controleFinanceiroRepository.getAll(codigoUsuario, descricao);
         return lista != null ? lista : List.of();
     }
 
