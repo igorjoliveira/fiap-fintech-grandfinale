@@ -107,34 +107,4 @@ public class Usuario extends BaseModel {
                 && (this.autenticador == Autenticador.Interno && this.senha.equals(senha)
                 || this.autenticador == Autenticador.Externo && senha == null);
     }
-    public Usuario criarControleFinanceiro(String descricao) throws EntradaDadoInvalidaException {
-        for (var controleFinanceiro : this.controleFinanceiroLista) {
-            if(controleFinanceiro.getDescricao().equalsIgnoreCase(descricao)){
-                throw new EntradaDadoInvalidaException("Já existe um controle financeiro com essa descrição!");
-            }
-        }
-
-        var controleFinanceiro = new ControleFinanceiro(descricao);
-        controleFinanceiro.adicionarParticipante(this.getCodigo(), true);
-
-        controleFinanceiroLista.add(controleFinanceiro);
-        return this;
-    }
-    public Boolean validarControleFinanceiro(int codigo) throws EntradaDadoInvalidaException {
-        return obterControleFinanceiro(codigo) != null;
-    }
-    public ControleFinanceiro obterControleFinanceiro(int codigo) throws EntradaDadoInvalidaException {
-        for (var item : this.controleFinanceiroLista){
-            if(item.getCodigo() == codigo)
-                return item;
-        }
-
-        throw new EntradaDadoInvalidaException(String.format("Não foi encontrado nenhum controle para o código %d", codigo));
-    }
-    public void removerFinanceiro(int codigo) throws EntradaDadoInvalidaException {
-        if(!validarControleFinanceiro(codigo))
-            throw new EntradaDadoInvalidaException(String.format("Não foi encontrado nenhum controle para o código %d", codigo));
-
-        this.controleFinanceiroLista.removeIf(item -> item.getCodigo() == codigo);
-    }
 }

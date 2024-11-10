@@ -38,17 +38,23 @@ public class ControleFinanceiroServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
+        var codigo = req.getParameter("codigo");
+        var descricao = req.getParameter("descricao");
+
         try {
-            var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
-            var controleFinanceiro = new ControleFinanceiro(req.getParameter("descricao"));
+            var controleFinanceiro = new ControleFinanceiro(descricao);
 
-            this.controleFinanceiroService.insertControleFinanceiro(usuario.getCodigo(), controleFinanceiro);
+            if(codigo != null && !codigo.isEmpty()){
+                controleFinanceiro.setCodigo(Integer.parseInt(codigo));
+                this.controleFinanceiroService.updateControleFinanceiro(usuario.getCodigo(), controleFinanceiro);
+            }
+            else
+                this.controleFinanceiroService.insertControleFinanceiro(usuario.getCodigo(), controleFinanceiro);
 
-            req.getSession().setAttribute("sucesso", true);
-            req.getSession().setAttribute("mensagem", "Controle Financeiro adicionado com sucesso!");
-        } catch (SQLException e) {
-            req.getSession().setAttribute("sucesso", false);
-            req.getSession().setAttribute("mensagem", "Erro ao adicionar Controle Financeiro.");
+            req.getSession().setAttribute("status", true);
+        } catch (RuntimeException | SQLException e) {
+            req.getSession().setAttribute("status", false);
         }
 
         resp.sendRedirect(req.getContextPath() + "/controlefinanceiro-servlet");

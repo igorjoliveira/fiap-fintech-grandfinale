@@ -1,6 +1,7 @@
 package br.com.fiap.fintechgrandfinale.infra.data.repositories;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
+import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IControleFinanceiroRepository;
 
 import java.sql.SQLException;
@@ -16,7 +17,35 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
 
     @Override
     public ControleFinanceiro getById(int id) {
-        return null;
+        ControleFinanceiro controleFinanceiro = null;
+        try{
+            var cnn = this.getConnection();
+            if(cnn != null) {
+
+                var stm = cnn.prepareStatement("select * from controle_financeiro where CODIGO = ?");
+                stm.setInt(1, id);
+                var result = stm.executeQuery();
+
+                if (result.next()) {
+                    var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
+
+                    controleFinanceiro = new ControleFinanceiro();
+                    controleFinanceiro.setCodigo(result.getInt("CODIGO"));
+                    controleFinanceiro.setDescricao(result.getString("DESCRICAO"));
+                    controleFinanceiro.setAtivo(result.getBoolean("ATIVO"));
+                    controleFinanceiro.setDataHoraCadastro(result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime());
+                    if(dataHoraAtualizacao != null) {
+                        controleFinanceiro.setDataHoraAtualizacao(dataHoraAtualizacao.toLocalDateTime());
+                    }
+                }
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
+
+        return controleFinanceiro;
     }
 
     @Override
@@ -45,6 +74,24 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
 
     @Override
     public void update(ControleFinanceiro controleFinanceiro) {
+        var cnn = this.getConnection();
+        if (cnn != null) {
+            try {
+                var stm = cnn.prepareStatement("update controle_financeiro\n" +
+                        "set descricao = ?,\n" +
+                        "data_hora_atualizacao = ?\n" +
+                        "where codigo = ? ");
+
+                stm.setString(1, controleFinanceiro.getDescricao());
+                stm.setTimestamp(2, java.sql.Timestamp.valueOf(controleFinanceiro.getDataHoraAtualizacao()));
+                stm.setInt(3, controleFinanceiro.getCodigo());
+                stm.executeUpdate();
+            } catch(RuntimeException | SQLException e){
+                throw new RuntimeException(e);
+            } finally{
+                this.closeConnection();
+            }
+        }
     }
 
     @Override
