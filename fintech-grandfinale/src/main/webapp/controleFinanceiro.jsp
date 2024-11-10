@@ -44,7 +44,6 @@
             </div>
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -90,7 +89,6 @@
 </div>
 <!-- App js -->
 <script src="resources/js/bootstrap.bundle.min.js"></script>
-
 <script>
     function loadTabContent(tabId, servletUrl) {
         $('.tab-pane').removeClass('active show');
@@ -113,12 +111,9 @@
         });
     }
 
-    // Initially load the first tab (Grupo)
     $(document).ready(function() {
         loadTabContent('grupo', 'controlefinanceiro-servlet');
     });
 </script>
-
 </body>
-
 </html>

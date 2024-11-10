@@ -44,9 +44,13 @@ public class ControleFinanceiroServlet extends HttpServlet {
 
             this.controleFinanceiroService.insertControleFinanceiro(usuario.getCodigo(), controleFinanceiro);
 
-            req.getRequestDispatcher("/controleFinanceiro.jsp").forward(req, resp);
+            req.getSession().setAttribute("sucesso", true);
+            req.getSession().setAttribute("mensagem", "Controle Financeiro adicionado com sucesso!");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            req.getSession().setAttribute("sucesso", false);
+            req.getSession().setAttribute("mensagem", "Erro ao adicionar Controle Financeiro.");
         }
+
+        resp.sendRedirect(req.getContextPath() + "/controlefinanceiro-servlet");
     }
 }

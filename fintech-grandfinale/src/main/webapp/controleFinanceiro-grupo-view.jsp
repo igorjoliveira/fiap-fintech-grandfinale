@@ -71,7 +71,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="grupoForm" action="controlefinanceiro-servlet" method="POST">
+          <form id="grupoForm">
             <div class="row mb-3">
               <div class="col-md-12">
                 <label for="descricao" class="form-label">Descrição</label>
@@ -84,6 +84,25 @@
       </div>
     </div>
   </div>
+
+  <c:if test="${not empty sessionScope.sucesso}">
+    <div class="mt-5 alert alert-dismissible fade show alert-footer
+    <c:choose>
+      <c:when test="${sessionScope.sucesso}">alert-success</c:when>
+      <c:otherwise>alert-danger</c:otherwise>
+    </c:choose>" role="alert">
+      <c:choose>
+        <c:when test="${sessionScope.sucesso}"><strong>Parabéns!</strong> ${sessionScope.mensagem}</c:when>
+        <c:otherwise><strong>Atenção!</strong> ${sessionScope.mensagem}</c:otherwise>
+      </c:choose>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <c:remove var="sucesso" scope="session" />
+    <c:remove var="mensagem" scope="session" />
+  </c:if>
+
   <script>
       function clearForm() {
           document.getElementById('grupoForm').reset();
@@ -91,14 +110,27 @@
       }
 
       $(document).ready(function() {
+          setTimeout(function() {
+              $('.alert').alert('close');
+          }, 5000);
+
           $('#grupoFiltroForm').submit(function(event) {
               event.preventDefault();
-
               var filter = $('input[name="filtro_descricao"]').val();
-
               $.get('controlefinanceiro-servlet', { filtro_descricao: filter }, function(response) {
                   $('#content-grupo').html(response);
                   $('#filtro_descricao').val(filter);
+              });
+          });
+
+          $('#grupoForm').submit(function(event) {
+              event.preventDefault();
+              var descricao = $('input[name="descricao"]').val();
+              $('#grupoModal').modal('hide');
+              $.post('controlefinanceiro-servlet', { descricao: descricao }, function(response) {
+                  console.log(response);
+                  $('#content-grupo').html(response);
+                  clearForm();
               });
           });
       });
