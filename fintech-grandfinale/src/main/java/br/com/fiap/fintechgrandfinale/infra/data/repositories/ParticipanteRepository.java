@@ -17,7 +17,31 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
 
     @Override
     public Participante getById(int id) {
-        return null;
+        Participante participante = null;
+        try{
+            var cnn = this.getConnection();
+            if(cnn != null) {
+
+                var stm = cnn.prepareStatement("select * from participante where CODIGO = ?");
+                stm.setInt(1, id);
+                var result = stm.executeQuery();
+
+                if (result.next()) {
+                    participante = new Participante();
+                    participante.setCodigo(result.getInt("CODIGO"));
+                    participante.setCodigoUsuario(result.getInt("CODIGO_USUARIO"));
+                    participante.setCodigoControleFinanceiro(result.getInt("CODIGO_CONTROLE_FINANCEIRO"));
+                    participante.setAtivo(result.getBoolean("ATIVO"));
+                    participante.setProprietario(result.getBoolean("PROPRIETARIO"));
+                }
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
+
+        return participante;
     }
 
     @Override
@@ -46,7 +70,28 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
 
     @Override
     public void update(Participante participante) {
+        var cnn = this.getConnection();
+        if (cnn != null) {
+            try {
+                var stm = cnn.prepareStatement("update participante\n" +
+                        "set codigo_usuario = ?,\n" +
+                        "codigo_controle_financeiro = ?,\n" +
+                        "ativo = ?,\n" +
+                        "proprietario = ?\n" +
+                        "where codigo = ?");
 
+                stm.setInt(1, participante.getCodigoUsuario());
+                stm.setInt(2, participante.getCodigoControleFinanceiro());
+                stm.setBoolean(3, participante.getAtivo());
+                stm.setBoolean(4, participante.getProprietario());
+                stm.setInt(5, participante.getCodigo());
+                stm.executeUpdate();
+            } catch(RuntimeException | SQLException e){
+                throw new RuntimeException(e);
+            } finally{
+                this.closeConnection();
+            }
+        }
     }
 
     @Override
@@ -74,7 +119,7 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
                         "from participante a " +
                         "inner join usuario b on a.codigo_usuario = b.codigo " +
                         "inner join controle_financeiro c on a.codigo_controle_financeiro = c.codigo " +
-                        "where b.codigo = ? ");
+                        "where a.codigo_controle_financeiro in (select codigo_controle_financeiro from participante where codigo_usuario = ?) ");
 
                 if (codigoControleFinanceiro > 0) {
                     query.append(" AND a.codigo_controle_financeiro = ?");

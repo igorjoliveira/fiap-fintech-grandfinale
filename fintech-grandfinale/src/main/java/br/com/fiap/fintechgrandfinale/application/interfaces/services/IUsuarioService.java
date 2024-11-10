@@ -8,4 +8,5 @@ public interface IUsuarioService {
     void update(int codigo, Usuario form);
     Usuario login(String username, String password);
     Usuario getUser(int codigo);
+    Usuario getUser(String email);
 }

@@ -36,10 +36,15 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario login(String email, String senha) {
-        var usuario = this.usuarioRepository.findByEmail(email);
+        var usuario = this.getUser(email);
         return usuario != null && usuario.validarCredencial(senha)
                 ? usuario
                 : null;
+    }
+
+    @Override
+    public Usuario getUser(String email) {
+        return this.usuarioRepository.findByEmail(email);
     }
 
     @Override

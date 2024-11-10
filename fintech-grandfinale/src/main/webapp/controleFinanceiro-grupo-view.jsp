@@ -54,7 +54,7 @@
               <td>${DateUtils.formatLocalDateTime(item.dataHoraCadastro)}</td>
               <td>${item.ativo}</td>
               <td class="table-action">
-                <a href="javascript: void(0);" class="action-icon" data-item='${item.toJson()}'> <i class="mdi mdi-pencil"></i></a>
+                <a href="javascript: void(0);" class="action-icon" data-item='${item.toJson()}'><i class="mdi mdi-pencil"></i></a>
                 <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
               </td>
             </tr>

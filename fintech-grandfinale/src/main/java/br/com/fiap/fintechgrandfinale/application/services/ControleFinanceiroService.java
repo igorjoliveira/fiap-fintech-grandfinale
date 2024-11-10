@@ -1,6 +1,7 @@
 package br.com.fiap.fintechgrandfinale.application.services;
 
 import br.com.fiap.fintechgrandfinale.application.interfaces.services.IControleFinanceiroService;
+import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioService;
 import br.com.fiap.fintechgrandfinale.domain.entities.CarteiraDigital;
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
 import br.com.fiap.fintechgrandfinale.domain.entities.Participante;
@@ -14,15 +15,16 @@ import br.com.fiap.fintechgrandfinale.infra.data.repositories.ControleFinanceiro
 import br.com.fiap.fintechgrandfinale.infra.data.repositories.ParticipanteRepository;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControleFinanceiroService implements IControleFinanceiroService {
+    private IUsuarioService usuarioService;
     private IParticipanteRepository participanteRepository;
     private ICarteiraDigitalRepository carteiraDigitalRepository;
     private IControleFinanceiroRepository controleFinanceiroRepository;
 
     public ControleFinanceiroService() {
+        this.usuarioService = new UsuarioService();
         this.participanteRepository = new ParticipanteRepository();
         this.carteiraDigitalRepository = new CarteiraDigitalRepository();
         this.controleFinanceiroRepository = new ControleFinanceiroRepository();
@@ -60,12 +62,20 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     public void insertControleFinanceiro(int codigoUsuario, ControleFinanceiro form) throws SQLException {
         var codigoControleFinanceiro = this.controleFinanceiroRepository.insert(form);
         var participante = new Participante(codigoUsuario, codigoControleFinanceiro, true, true);
-        this.insertParticipante(participante);
+        this.insertParticipante(codigoUsuario, participante);
     }
 
     @Override
-    public void insertParticipante(Participante form) throws SQLException {
-        var codigoParticipante = this.participanteRepository.insert(form);
+    public void insertParticipante(int codigoUsuario, Participante form) throws SQLException {
+        var usuario = this.usuarioService.getUser(form.getUsuario().getEmail());
+        if(usuario != null) {
+            form.setUsuario(usuario);
+            form.setCodigoUsuario(usuario.getCodigo());
+            this.participanteRepository.insert(form);
+        }
+        else {
+            throw new RuntimeException("Usuário não encontrado para o email informado");
+        }
     }
 
     @Override
@@ -77,7 +87,20 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     }
 
     @Override
-    public void updateParticipante(Participante form) {
+    public void updateParticipante(int codigoUsuario, Participante form) {
+        var participante = this.participanteRepository.getById(form.getCodigo());
+        var usuario = this.usuarioService.getUser(form.getUsuario().getEmail());
+        var controle = this.controleFinanceiroRepository.getById(form.getCodigoControleFinanceiro());
 
+        if(participante != null && usuario != null && controle != null) {
+            participante.setUsuario(usuario);
+            participante.setControleFinanceiro(controle);
+            participante.atualizarParticipante(usuario.getCodigo(), controle.getCodigo(), form.getAtivo(), form.getProprietario());
+
+            this.participanteRepository.update(participante);
+        }
+        else {
+            throw new RuntimeException("Não foram encontrados dados para os códigos informados.");
+        }
     }
 }

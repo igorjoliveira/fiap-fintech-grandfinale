@@ -41,15 +41,14 @@ public class UsuarioServlet extends HttpServlet {
         usuario.setAtivo(true);
 
         this.usuarioService.update(usuarioLogado.getCodigo(), usuario);
-
-        doGet(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/usuario-servlet");
     }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var usuarioLogado = (Usuario)req.getSession().getAttribute("usuarioLogado");
         var userModel = this.usuarioService.getUser(usuarioLogado.getCodigo());
 
-        req.setAttribute("usuarioLogado", userModel);
+        req.getSession().setAttribute("usuarioLogado", userModel);
         req.getRequestDispatcher("/minhaConta.jsp").forward(req, resp);
     }
 }

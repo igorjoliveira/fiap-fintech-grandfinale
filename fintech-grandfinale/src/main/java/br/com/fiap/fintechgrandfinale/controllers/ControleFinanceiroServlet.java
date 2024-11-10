@@ -38,12 +38,12 @@ public class ControleFinanceiroServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
-        var codigo = req.getParameter("codigo");
-        var descricao = req.getParameter("descricao");
-        var ativo = req.getParameter("ativo");
-
         try {
+            var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
+            var codigo = req.getParameter("codigo");
+            var descricao = req.getParameter("descricao");
+            var ativo = req.getParameter("ativo");
+
             var controleFinanceiro = new ControleFinanceiro(descricao);
 
             if(codigo != null && !codigo.isEmpty()){

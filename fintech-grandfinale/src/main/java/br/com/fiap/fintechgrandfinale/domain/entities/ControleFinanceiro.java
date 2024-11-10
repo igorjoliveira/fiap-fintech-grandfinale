@@ -55,6 +55,7 @@ public class ControleFinanceiro extends BaseModel {
         json.put("descricao", this.getDescricao());
         json.put("codigo", this.getCodigo());
         json.put("ativo", this.getAtivo());
+
         return json.toString();
     }
 }

@@ -1,6 +1,7 @@
 package br.com.fiap.fintechgrandfinale.domain.entities;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.forma.pagamento.Conta;
+import org.json.JSONObject;
 
 import javax.naming.ldap.Control;
 import java.time.LocalDateTime;
@@ -95,5 +96,35 @@ public class Participante extends BaseModel {
         this.codigoControleFinanceiro = codigoControleFinanceiro;
         this.ativo = ativo;
         this.proprietario = proprietario;
+    }
+
+    public void atualizarParticipante(int codigoUsuario, int codigoControleFinanceiro, Boolean ativo, Boolean proprietario) {
+        this.codigoUsuario = codigoUsuario;
+        this.codigoControleFinanceiro = codigoControleFinanceiro;
+        this.ativo = ativo;
+        this.proprietario = proprietario;
+        this.setDataHoraAtualizacao(LocalDateTime.now());
+    }
+
+    public String toJson() {
+        JSONObject usuarioJson = new JSONObject();
+        usuarioJson.put("codigo", this.getUsuario().getCodigo());
+        usuarioJson.put("nome", this.getUsuario().getNome());
+        usuarioJson.put("email", this.getUsuario().getEmail());
+
+        JSONObject controleFinanceiroJson = new JSONObject();
+        controleFinanceiroJson.put("codigo", this.getControleFinanceiro().getCodigo());
+        controleFinanceiroJson.put("descricao", this.getControleFinanceiro().getDescricao());
+
+        JSONObject json = new JSONObject();
+        json.put("codigo", this.getCodigo());
+        json.put("codigo_controle_financeiro", this.getCodigoControleFinanceiro());
+        json.put("codigo_usuario", this.getCodigoUsuario());
+        json.put("ativo", this.getAtivo());
+        json.put("proprietario", this.getProprietario());
+        json.put("usuario", usuarioJson);
+        json.put("controle_financeiro", controleFinanceiroJson);
+
+        return json.toString();
     }
 }

@@ -15,7 +15,7 @@ public interface IControleFinanceiroService {
     List<CarteiraDigital> getAllCarteiraDigital(int codigoUsuario, int codigoControleFinanceiro, int codigoInstituicaoFinanceira, String nome, String email);
     List<InstituicaoFinanceira> getAllInstituicoes();
     void insertControleFinanceiro(int codigoUsuario, ControleFinanceiro form) throws SQLException;
-    void insertParticipante(Participante form) throws SQLException;
+    void insertParticipante(int codigoUsuario, Participante form) throws SQLException;
     void updateControleFinanceiro(int codigoUsuario, ControleFinanceiro form);
-    void updateParticipante(Participante form);
+    void updateParticipante(int codigoUsuario, Participante form);
 }

@@ -33,7 +33,7 @@
     </div>
     <div class="row mb-3">
       <div class="col-12 d-flex flex-row-reverse">
-        <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#modalParticipante" onclick="clearForm()">Incluir</button>
+        <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#participanteModal" onclick="clearForm()">Incluir</button>
         <button type="submit" class="btn btn-sm btn-success">Buscar</button>
       </div>
     </div>
@@ -68,7 +68,7 @@
               <td>${item.proprietario}</td>
               <td>${item.ativo}</td>
               <td class="table-action">
-                <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-pencil"></i></a>
+                <a href="javascript: void(0);" class="action-icon" data-item='${item.toJson()}'> <i class="mdi mdi-pencil"></i></a>
                 <a href="javascript: void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
               </td>
             </tr>
@@ -78,29 +78,43 @@
       </div>
     </div>
   </div>
-  <div class="modal fade" id="modalParticipante" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal fade" id="participanteModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalLabel">Editar Descrição</h5>
+          <h5 class="modal-title" id="modalLabel">Participante</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="participanteForm" action="descricaoController" method="GET">
-            <div class="mb-3">
-              <label for="descricao" class="form-label">Descrição</label>
-              <input type="text" class="form-control" id="descricao" name="descricao" required>
+          <form id="participanteForm">
+            <input type="hidden" id="codigo" name="codigo">
+
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label for="codigoControleFinanceiro" class="form-label">Grupo</label>
+                <select class="form-control" id="codigoControleFinanceiro" name="codigoControleFinanceiro" required>
+                  <option value="">Selecione</option>
+                  <c:forEach items="${model.grupos}" var="item">
+                    <option value="${item.codigo}">${item.descricao}</option>
+                  </c:forEach>
+                </select>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="dataCadastro" class="form-label">Data de Cadastro</label>
-              <input type="text" class="form-control" id="dataCadastro" name="dataCadastro" readonly>
+            <div class="row mb-3">
+              <div class="col-md-10">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+              </div>
             </div>
-            <div class="mb-3">
-              <label for="ativo" class="form-label">Ativo</label>
-              <select class="form-control" id="ativo" name="ativo">
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
-              </select>
+            <div class="row mb-3">
+              <div class="col-md-2">
+                <label for="proprietario" class="form-label">Propritário</label>
+                <input type="checkbox" class="form-check-input" id="proprietario" name="proprietario">
+              </div>
+              <div class="col-md-1">
+                <label for="ativo" class="form-label">Ativo</label>
+                <input type="checkbox" class="form-check-input" id="ativo" name="ativo">
+              </div>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </form>
@@ -108,32 +122,105 @@
       </div>
     </div>
   </div>
+
+  <c:if test="${not empty sessionScope.status}">
+    <div class="mt-5 alert alert-dismissible fade show alert-footer
+    <c:choose>
+      <c:when test="${sessionScope.status}">alert-success</c:when>
+      <c:otherwise>alert-danger</c:otherwise>
+    </c:choose>" role="alert">
+      <c:choose>
+        <c:when test="${sessionScope.status}"><strong>Parabéns!</strong> Operação realizada com sucesso</c:when>
+        <c:otherwise><strong>Atenção!</strong> Ocorreu um erro ao realizar operação</c:otherwise>
+      </c:choose>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <c:remove var="status" scope="session" />
+  </c:if>
+
   <script>
-      function clearForm() {
-          document.getElementById('participanteForm').reset();
-      }
+    function clearForm() {
+      $('#participanteForm')[0].reset();
+      $('#participanteForm #codigo').val(0);
+      $('#participanteForm #codigoControleFinanceiro').val(0);
+      $('#participanteForm #email').val('');
+      $('#participanteForm #ativo').prop('checked', true);
+      $('#participanteForm #proprietario').prop('checked', false);
+      $('#participanteModal #modalLabel').text('Incluir Participante');
+    }
 
-      $(document).ready(function() {
-        $('#participanteFiltroForm').submit(function(event) {
-            event.preventDefault();
+    function setEditForm(item) {
+      console.log(item);
+      $('#participanteForm')[0].reset();
+      $('#participanteForm #codigo').val(item.codigo);
+      $('#participanteForm #codigoControleFinanceiro').val(item.codigo_controle_financeiro);
+      $('#participanteForm #email').val(item.usuario.email);
+      $('#participanteForm #ativo').prop('checked', item.ativo);
+      $('#participanteForm #proprietario').prop('checked', item.proprietario);
+      $('#participanteModal #modalLabel').text('Atualizar Participante');
+    }
 
-            var grupo = $('#filtro_grupo').val();
-            var nome = $('#filtro_nome').val();
-            var email = $('#filtro_email').val();
+    $(document).ready(function() {
+      setTimeout(function() {
+        $('.alert').alert('close');
+      }, 5000);
 
-            $.get('participante-servlet', {
-                filtro_grupo: grupo,
-                filtro_nome: nome,
-                filtro_email: email
-            }, function(response) {
-                $('#content-participante').html(response);
+      $('#participanteFiltroForm').submit(function(event) {
+        event.preventDefault();
 
-                $('#filtro_grupo').val(grupo);
-                $('#filtro_nome').val(nome);
-                $('#filtro_email').val(email);
-            });
+        var grupo = $('#filtro_grupo').val();
+        var nome = $('#filtro_nome').val();
+        var email = $('#filtro_email').val();
+
+        $.get('participante-servlet', {
+          filtro_grupo: grupo,
+          filtro_nome: nome,
+          filtro_email: email
+          }, function(response) {
+            $('#content-participante').html(response);
+
+            $('#filtro_grupo').val(grupo);
+            $('#filtro_nome').val(nome);
+            $('#filtro_email').val(email);
+          });
         });
+
+      $('#participanteForm').submit(function(event) {
+        event.preventDefault();
+
+        var codigo = $('#participanteForm #codigo').val();
+        var codigoControleFinanceiro = $('#participanteForm #codigoControleFinanceiro').val();
+        var email = $('#participanteForm #email').val();
+        var ativo = $('#participanteForm #ativo').prop('checked');
+        var proprietario = $('#participanteForm #proprietario').prop('checked');
+
+        $('#participanteModal').modal('hide');
+
+        $.post('participante-servlet',  {
+          codigo: codigo,
+          codigoControleFinanceiro: codigoControleFinanceiro,
+          email: email,
+          ativo: ativo,
+          proprietario: proprietario
+          }, function(response) {
+
+            $('#content-participante').html(response);
+            clearForm();
+          });
+        });
+
+      $('[data-bs-toggle="modal"][data-bs-target="#participanteModal"]').on('click', function() {
+        clearForm();
       });
+
+      $('.action-icon').on('click', function() {
+        var item = $(this).data('item');
+        setEditForm(item);
+        $('#participanteModal').modal('show');
+      });
+    });
   </script>
 </div>
 
