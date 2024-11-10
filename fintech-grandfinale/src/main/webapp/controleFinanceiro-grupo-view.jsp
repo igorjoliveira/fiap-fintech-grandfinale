@@ -5,30 +5,29 @@
 <%@ page import="br.com.fiap.fintechgrandfinale.domain.utils.DateUtils" %>
 
 <div id="content-grupo">
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <form id="grupoFiltroForm" class="d-inline">
+  <form id="grupoFiltroForm" class="d-inline">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <label for="filtro_descricao" class="form-label">Descrição</label>
                 <input type="text" class="form-control" id="filtro_descricao" name="filtro_descricao">
               </div>
             </div>
-
-            <div class="row mt-2">
-              <div class="col-12 d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#grupoModal" onclick="clearForm()">Incluir</button>
-                <button type="submit" class="btn btn-sm btn-success">Buscar</button>
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="row mt-2">
+    <div class="row mb-3">
+      <div class="col-12 d-flex flex-row-reverse">
+        <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#grupoModal" onclick="clearForm()">Incluir</button>
+        <button type="submit" class="btn btn-sm btn-success">Buscar</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
     <div class="col-12">
       <div class="table-responsive-sm">
         <table class="table table-striped table-centered mb-0">
@@ -91,14 +90,16 @@
           document.getElementById('descricao').value = "";
       }
 
-      $('#grupoFiltroForm').submit(function(event) {
-          event.preventDefault();
+      $(document).ready(function() {
+          $('#grupoFiltroForm').submit(function(event) {
+              event.preventDefault();
 
-          var filter = $('input[name="filtro_descricao"]').val();
+              var filter = $('input[name="filtro_descricao"]').val();
 
-          $.get('controlefinanceiro-servlet', { filtro_descricao: filter }, function(response) {
-              $('#content-grupo').html(response);
-              $('#filtro_descricao').val(filter);
+              $.get('controlefinanceiro-servlet', { filtro_descricao: filter }, function(response) {
+                  $('#content-grupo').html(response);
+                  $('#filtro_descricao').val(filter);
+              });
           });
       });
   </script>

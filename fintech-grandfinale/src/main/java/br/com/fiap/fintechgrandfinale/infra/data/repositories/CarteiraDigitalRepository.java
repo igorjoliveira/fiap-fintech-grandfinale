@@ -37,34 +37,63 @@ public class CarteiraDigitalRepository extends BaseRepository<CarteiraDigital> i
     }
 
     @Override
-    public List<CarteiraDigital> getAll(int codigoUsuario) {
+    public List<CarteiraDigital> getAll(int codigoUsuario, int codigoControleFinanceiro, int codigoInstituicaoFinanceira, String nome, String email) {
         var list = new ArrayList<CarteiraDigital>();
         try{
             var cnn = this.getConnection();
             if(cnn != null) {
 
-                var stm = cnn.prepareStatement("select \n" +
-                        "a.codigo                        as codigo_carteira_digital,\n" +
-                        "a.ativo                         as ativo_carteira_digital,\n" +
-                        "a.data_hora_cadastro            as data_hora_cadastro_carteira_digital,\n" +
-                        "a.data_hora_atualizacao         as data_hora_atualizacao_carteira_digital,\n" +
-                        "a.codigo_instituicao_financeira as codigo_instituicao_financeira,\n" +
-                        "e.nome                          as nome_instituicao_financeira,\n" +
-                        "b.codigo                        as codigo_participante,\n" +
-                        "c.codigo                        as codigo_controle_financeiro,\n" +
-                        "c.descricao                     as descricao_controle_financeiro,\n" +
-                        "d.codigo                        as codigo_usuario,\n" +
-                        "d.email                         as email_usuario,\n" +
-                        "d.nome                          as nome_usuario\n" +
-                        "from carteira_digital a \n" +
-                        "inner join participante b on a.codigo_participante = b.codigo\n" +
-                        "inner join controle_financeiro c on b.codigo_controle_financeiro = c.codigo\n" +
-                        "inner join usuario d on b.codigo_usuario = d.codigo\n" +
-                        "inner join instituicao_financeira e on a.codigo_instituicao_financeira = e.codigo\n" +
-                        "where c.codigo in (select codigo_controle_financeiro from participante where codigo_usuario = ?)");
-                stm.setInt(1, codigoUsuario);
-                var result = stm.executeQuery();
+                StringBuilder query = new StringBuilder(
+                        "select " +
+                                "a.codigo                        as codigo_carteira_digital, " +
+                                "a.ativo                         as ativo_carteira_digital, " +
+                                "a.data_hora_cadastro            as data_hora_cadastro_carteira_digital, " +
+                                "a.data_hora_atualizacao         as data_hora_atualizacao_carteira_digital, " +
+                                "a.codigo_instituicao_financeira as codigo_instituicao_financeira, " +
+                                "e.nome                          as nome_instituicao_financeira, " +
+                                "b.codigo                        as codigo_participante, " +
+                                "c.codigo                        as codigo_controle_financeiro, " +
+                                "c.descricao                     as descricao_controle_financeiro, " +
+                                "d.codigo                        as codigo_usuario, " +
+                                "d.email                         as email_usuario, " +
+                                "d.nome                          as nome_usuario " +
+                                "from carteira_digital a " +
+                                "inner join participante b on a.codigo_participante = b.codigo " +
+                                "inner join controle_financeiro c on b.codigo_controle_financeiro = c.codigo " +
+                                "inner join usuario d on b.codigo_usuario = d.codigo " +
+                                "inner join instituicao_financeira e on a.codigo_instituicao_financeira = e.codigo " +
+                                "where c.codigo in (select codigo_controle_financeiro from participante where codigo_usuario = ?)"
+                );
 
+                List<Object> parameters = new ArrayList<>();
+                parameters.add(codigoUsuario);
+
+                if (codigoControleFinanceiro > 0) {
+                    query.append(" and c.codigo = ?");
+                    parameters.add(codigoControleFinanceiro);
+                }
+
+                if (codigoInstituicaoFinanceira > 0) {
+                    query.append(" and a.codigo_instituicao_financeira = ?");
+                    parameters.add(codigoInstituicaoFinanceira);
+                }
+
+                if (nome != null && !nome.trim().isEmpty()) {
+                    query.append(" and upper(d.nome) like upper(?)");
+                    parameters.add("%" + nome.toUpperCase() + "%");
+                }
+
+                if (email != null && !email.trim().isEmpty()) {
+                    query.append(" and upper(d.email) like upper(?)");
+                    parameters.add("%" + email.toUpperCase() + "%");
+                }
+
+                var stm = cnn.prepareStatement(query.toString());
+                for (int i = 0; i < parameters.size(); i++) {
+                    stm.setObject(i + 1, parameters.get(i));
+                }
+
+                var result = stm.executeQuery();
                 while (result.next()) {
                     var instituicaoFinanceira = EnumUtils.fromValue(InstituicaoFinanceira.class, result.getInt("codigo_instituicao_financeira"));
                     var dataHoraAtualizacao = result.getTimestamp("data_hora_atualizacao_carteira_digital");

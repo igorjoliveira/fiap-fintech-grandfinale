@@ -24,7 +24,6 @@ public class EnumUtils {
         throw new IllegalArgumentException("Invalid value: " + value + " for enum " + enumClass.getSimpleName());
     }
 
-    // Generic method to get all enum values as a list
     public static <E extends Enum<E>> List<E> getAllValues(Class<E> enumClass) {
         return Arrays.asList(enumClass.getEnumConstants());
     }

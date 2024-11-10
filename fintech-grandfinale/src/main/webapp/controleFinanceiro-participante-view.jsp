@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <div id="content-participante">
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
-          <form id="participanteFiltroForm" class="d-inline">
+  <form id="participanteFiltroForm" class="d-inline">
+    <div class="row mb-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
             <div class="row">
               <div class="col-md-3">
                 <label for="filtro_grupo" class="form-label">Grupo</label>
@@ -27,21 +27,18 @@
                 <input type="text" class="form-control" id="filtro_email">
               </div>
             </div>
-
-            <div class="row mt-2">
-              <div class="col-12 d-flex flex-row-reverse">
-                <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#modalParticipante" onclick="clearForm()">Incluir</button>
-                <button type="submit" class="btn btn-sm btn-success">Buscar</button>
-              </div>
-            </div>
-          </form>
-
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="row mt-2">
+    <div class="row mb-3">
+      <div class="col-12 d-flex flex-row-reverse">
+        <button type="button" class="btn btn-sm btn-primary ml-2" data-bs-toggle="modal" data-bs-target="#modalParticipante" onclick="clearForm()">Incluir</button>
+        <button type="submit" class="btn btn-sm btn-success">Buscar</button>
+      </div>
+    </div>
+  </form>
+  <div class="row">
     <div class="col-12">
       <div class="table-responsive-sm">
         <table class="table table-striped table-centered mb-0">
@@ -81,7 +78,6 @@
       </div>
     </div>
   </div>
-
   <div class="modal fade" id="modalParticipante" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -112,7 +108,6 @@
       </div>
     </div>
   </div>
-
   <script>
       function clearForm() {
           document.getElementById('participanteForm').reset();
@@ -131,7 +126,6 @@
                 filtro_nome: nome,
                 filtro_email: email
             }, function(response) {
-                console.log(response);
                 $('#content-participante').html(response);
 
                 $('#filtro_grupo').val(grupo);

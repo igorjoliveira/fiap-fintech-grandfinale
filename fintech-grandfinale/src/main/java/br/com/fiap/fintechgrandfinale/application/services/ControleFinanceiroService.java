@@ -4,14 +4,17 @@ import br.com.fiap.fintechgrandfinale.application.interfaces.services.IControleF
 import br.com.fiap.fintechgrandfinale.domain.entities.CarteiraDigital;
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
 import br.com.fiap.fintechgrandfinale.domain.entities.Participante;
+import br.com.fiap.fintechgrandfinale.domain.enums.InstituicaoFinanceira;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.ICarteiraDigitalRepository;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IControleFinanceiroRepository;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IParticipanteRepository;
+import br.com.fiap.fintechgrandfinale.domain.utils.EnumUtils;
 import br.com.fiap.fintechgrandfinale.infra.data.repositories.CarteiraDigitalRepository;
 import br.com.fiap.fintechgrandfinale.infra.data.repositories.ControleFinanceiroRepository;
 import br.com.fiap.fintechgrandfinale.infra.data.repositories.ParticipanteRepository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControleFinanceiroService implements IControleFinanceiroService {
@@ -43,9 +46,14 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     }
 
     @Override
-    public List<CarteiraDigital> getAllCarteiraDigital(int codigoUsuario) {
-        var lista = this.carteiraDigitalRepository.getAll(codigoUsuario);
+    public List<CarteiraDigital> getAllCarteiraDigital(int codigoUsuario, int codigoControleFinanceiro, int codigoInstituicaoFinanceira, String nome, String email) {
+        var lista = this.carteiraDigitalRepository.getAll(codigoUsuario, codigoControleFinanceiro, codigoInstituicaoFinanceira, nome,email);
         return lista != null ? lista : List.of();
+    }
+
+    @Override
+    public List<InstituicaoFinanceira> getAllInstituicoes() {
+        return EnumUtils.getAllValues(InstituicaoFinanceira.class);
     }
 
     @Override
