@@ -87,8 +87,8 @@
   </div>
   <script>
       function clearForm() {
-          document.getElementById('editForm').reset();
-          document.getElementById('codigo').value = "";
+          document.getElementById('formControleFinanceiro').reset();
+          document.getElementById('descricao').value = "";
       }
 
       $('#filtroForm').submit(function(event) {

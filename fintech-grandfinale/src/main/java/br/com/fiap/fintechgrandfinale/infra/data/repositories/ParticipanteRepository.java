@@ -61,7 +61,8 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
             var cnn = this.getConnection();
             if(cnn != null) {
 
-                var stm = cnn.prepareStatement("select " +
+                StringBuilder query = new StringBuilder(
+                        "select " +
                         "a.codigo                       as codigo_participante, " +
                         "a.codigo_usuario               as codigo_usuario, " +
                         "a.codigo_controle_financeiro   as codigo_controle_financeiro,"  +
@@ -74,9 +75,34 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
                         "inner join usuario b on a.codigo_usuario = b.codigo " +
                         "inner join controle_financeiro c on a.codigo_controle_financeiro = c.codigo " +
                         "where b.codigo = ? ");
-                stm.setInt(1, codigoUsuario);
-                var result = stm.executeQuery();
 
+                if (codigoControleFinanceiro > 0) {
+                    query.append(" AND a.codigo_controle_financeiro = ?");
+                }
+
+                if (nome != null && !nome.isEmpty()) {
+                    query.append(" AND UPPER(b.nome) LIKE UPPER(?)");
+                }
+
+                if (email != null && !email.isEmpty()) {
+                    query.append(" AND UPPER(b.email) LIKE UPPER(?)");
+                }
+
+                var stm = cnn.prepareStatement(query.toString());
+                stm.setInt(1, codigoUsuario);
+
+                int paramIndex = 2;
+                if (codigoControleFinanceiro > 0) {
+                    stm.setInt(paramIndex++, codigoControleFinanceiro);
+                }
+                if (nome != null && !nome.isEmpty()) {
+                    stm.setString(paramIndex++, "%" + nome + "%");
+                }
+                if (email != null && !email.isEmpty()) {
+                    stm.setString(paramIndex++, "%" + email + "%");
+                }
+
+                var result = stm.executeQuery();
                 while (result.next()) {
 
                     var participante = new Participante(result.getInt("codigo_participante"),

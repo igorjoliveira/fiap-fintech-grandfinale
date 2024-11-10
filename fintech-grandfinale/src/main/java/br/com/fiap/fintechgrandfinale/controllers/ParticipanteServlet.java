@@ -26,8 +26,12 @@ public class ParticipanteServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
 
+        var filtroGrupo = req.getParameter("filtro_grupo") != null ? Integer.parseInt(req.getParameter("filtro_grupo")) : 0;
+        var filtroNome = req.getParameter("filtro_nome");
+        var filtroEmail = req.getParameter("filtro_email");
+
         var grupos = this.controleFinanceiroService.getAllControleFinanceiro(usuario.getCodigo(), null);
-        var participantes = this.controleFinanceiroService.getAllParticipante(usuario.getCodigo(), 0, "", "");
+        var participantes = this.controleFinanceiroService.getAllParticipante(usuario.getCodigo(), filtroGrupo, filtroNome, filtroEmail);
 
         var model = new ParticipanteModel();
         model.setGrupos(grupos);
