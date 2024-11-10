@@ -79,12 +79,14 @@ public class ControleFinanceiroRepository extends BaseRepository<ControleFinance
             try {
                 var stm = cnn.prepareStatement("update controle_financeiro\n" +
                         "set descricao = ?,\n" +
+                        "ativo = ?,\n" +
                         "data_hora_atualizacao = ?\n" +
                         "where codigo = ? ");
 
                 stm.setString(1, controleFinanceiro.getDescricao());
-                stm.setTimestamp(2, java.sql.Timestamp.valueOf(controleFinanceiro.getDataHoraAtualizacao()));
-                stm.setInt(3, controleFinanceiro.getCodigo());
+                stm.setBoolean(2, controleFinanceiro.getAtivo());
+                stm.setTimestamp(3, java.sql.Timestamp.valueOf(controleFinanceiro.getDataHoraAtualizacao()));
+                stm.setInt(4, controleFinanceiro.getCodigo());
                 stm.executeUpdate();
             } catch(RuntimeException | SQLException e){
                 throw new RuntimeException(e);

@@ -76,9 +76,13 @@
             <input type="hidden" id="codigo" name="codigo">
 
             <div class="row mb-3">
-              <div class="col-md-12">
+              <div class="col-md-10">
                 <label for="descricao" class="form-label">Descrição</label>
                 <input type="text" class="form-control" id="descricao" name="descricao" required>
+              </div>
+              <div class="col-md-1">
+                <label for="ativo" class="form-label">Ativo</label>
+                <input type="checkbox" class="form-check-input" id="ativo" name="ativo">
               </div>
             </div>
             <button type="submit" class="btn btn-primary">Salvar</button>
@@ -110,12 +114,14 @@
           document.getElementById('grupoForm').reset();
           document.getElementById('descricao').value = "";
           document.getElementById('codigo').value = "";
+          document.getElementById('ativo').checked = true;
           document.getElementById('modalLabel').textContent = "Incluir Grupo";
       }
 
       function setEditForm(item) {
           document.getElementById('descricao').value = item.descricao;
           document.getElementById('codigo').value = item.codigo;
+          document.getElementById('ativo').checked = item.ativo;
           document.getElementById('modalLabel').textContent = "Atualizar Grupo";
       }
 
@@ -140,10 +146,11 @@
 
               var descricao = $('input[name="descricao"]').val();
               var codigo = $('input[name="codigo"]').val();
+              var ativo = $('#ativo').prop('checked');
 
               $('#grupoModal').modal('hide');
 
-              $.post('controlefinanceiro-servlet',  { descricao: descricao, codigo: codigo }, function(response) {
+              $.post('controlefinanceiro-servlet',  { descricao: descricao, codigo: codigo, ativo: ativo }, function(response) {
 
                   $('#content-grupo').html(response);
                   clearForm();

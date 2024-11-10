@@ -41,12 +41,14 @@ public class ControleFinanceiroServlet extends HttpServlet {
         var usuario = (Usuario)req.getSession().getAttribute("usuarioLogado");
         var codigo = req.getParameter("codigo");
         var descricao = req.getParameter("descricao");
+        var ativo = req.getParameter("ativo");
 
         try {
             var controleFinanceiro = new ControleFinanceiro(descricao);
 
             if(codigo != null && !codigo.isEmpty()){
                 controleFinanceiro.setCodigo(Integer.parseInt(codigo));
+                controleFinanceiro.setAtivo(Boolean.parseBoolean(ativo));
                 this.controleFinanceiroService.updateControleFinanceiro(usuario.getCodigo(), controleFinanceiro);
             }
             else

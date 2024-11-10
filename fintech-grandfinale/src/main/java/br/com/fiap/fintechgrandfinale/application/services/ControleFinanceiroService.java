@@ -71,7 +71,7 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     @Override
     public void updateControleFinanceiro(int codigoUsuario, ControleFinanceiro form) {
         var controle = this.controleFinanceiroRepository.getById(form.getCodigo());
-        controle.atualizarControleFinanceiro(form.getDescricao());
+        controle.atualizarControleFinanceiro(form.getDescricao(), form.getAtivo());
 
         this.controleFinanceiroRepository.update(controle);
     }

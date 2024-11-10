@@ -44,8 +44,9 @@ public class ControleFinanceiro extends BaseModel {
         this.participanteLista = participanteLista;
     }
 
-    public void atualizarControleFinanceiro(String descricao) {
+    public void atualizarControleFinanceiro(String descricao, boolean ativo) {
         this.descricao = descricao;
+        this.ativo = ativo;
         this.setDataHoraAtualizacao(LocalDateTime.now());
     }
 
