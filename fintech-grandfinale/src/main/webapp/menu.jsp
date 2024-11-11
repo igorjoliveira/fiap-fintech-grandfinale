@@ -24,10 +24,7 @@
             <div class="collapse show" id="sidebarDashboards">
                 <ul class="side-nav-second-level">
                     <li>
-                        <a href="#">
-                            <span class="badge text-bg-secondary float-end">ON</span>
-                            <span>Saúde Financeira</span>
-                        </a>
+                        <a href="#">Saúde Financeira</a>
                     </li>
                     <li>
                         <a href="#">Receitas</a>
@@ -45,6 +42,7 @@
             <a href="controleFinanceiro.jsp" class="side-nav-link">
                 <i class="uil-user-circle"></i>
                 <span> Controle Financeiro </span>
+                <span class="badge text-bg-secondary float-end">ON</span>
             </a>
         </li>
 

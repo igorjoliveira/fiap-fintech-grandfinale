@@ -1,4 +1,4 @@
-package br.com.fiap.fintechgrandfinale.infra.data.repositories;
+package br.com.fiap.fintechgrandfinale.data.repositories;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.HistoricoRenda;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IHistoricoRendaRepository;

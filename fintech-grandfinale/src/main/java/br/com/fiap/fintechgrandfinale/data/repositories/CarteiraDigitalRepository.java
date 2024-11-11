@@ -1,4 +1,4 @@
-package br.com.fiap.fintechgrandfinale.infra.data.repositories;
+package br.com.fiap.fintechgrandfinale.data.repositories;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.CarteiraDigital;
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
@@ -20,16 +20,91 @@ public class CarteiraDigitalRepository extends BaseRepository<CarteiraDigital> i
 
     @Override
     public CarteiraDigital getById(int id) {
-        return null;
+
+        CarteiraDigital carteiraDigital = null;
+        try{
+            var cnn = this.getConnection();
+            if(cnn != null) {
+
+                var stm = cnn.prepareStatement("select * from carteira_digital where CODIGO = ?");
+                stm.setInt(1, id);
+                var result = stm.executeQuery();
+
+                if (result.next()) {
+                    var dataHoraAtualizacao = result.getTimestamp("DATA_HORA_ATUALIZACAO");
+                    var instituicaoFinanceira = result.getInt("CODIGO_INSTITUICAO_FINANCEIRA");
+
+                    carteiraDigital = new CarteiraDigital();
+                    carteiraDigital.setCodigo(result.getInt("CODIGO"));
+                    carteiraDigital.setCodigoParticipanteControleFinanceiro(result.getInt("CODIGO_PARTICIPANTE"));
+                    carteiraDigital.setInstituicaoFinanceira(EnumUtils.fromValue(InstituicaoFinanceira.class, instituicaoFinanceira));
+                    carteiraDigital.setAtivo(result.getBoolean("ATIVO"));
+                    carteiraDigital.setDataHoraCadastro(result.getTimestamp("DATA_HORA_CADASTRO").toLocalDateTime());
+
+                    if(dataHoraAtualizacao != null) {
+                        carteiraDigital.setDataHoraAtualizacao(dataHoraAtualizacao.toLocalDateTime());
+                    }
+                }
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
+
+        return carteiraDigital;
     }
 
     @Override
     public int insert(CarteiraDigital carteiraDigital) {
-        return 0;
+
+        try {
+            var cnn = this.getConnection();
+            if(cnn == null)
+                return 0;
+
+            var stm = cnn.prepareStatement("insert into carteira_digital (codigo_participante, codigo_instituicao_financeira, ativo, data_hora_cadastro)\n" +
+                    "values (?, ?, ?, ?)");
+
+            stm.setInt(1, carteiraDigital.getCodigoParticipanteControleFinanceiro());
+            stm.setInt(2, carteiraDigital.getInstituicaoFinanceira().getValue());
+            stm.setBoolean(3, carteiraDigital.getAtivo());
+            stm.setTimestamp(4, java.sql.Timestamp.valueOf(carteiraDigital.getDataHoraCadastro()));
+
+            stm.executeUpdate();
+            return getSequenceCurrentValue("SQ_CARTEIRA_DIGITAL");
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
     }
 
     @Override
     public void update(CarteiraDigital carteiraDigital) {
+        var cnn = this.getConnection();
+        if (cnn != null) {
+            try {
+                var stm = cnn.prepareStatement("update carteira_digital\n" +
+                        "set codigo_participante = ?,\n" +
+                        "codigo_instituicao_financeira = ?,\n" +
+                        "ativo = ?,\n" +
+                        "data_hora_atualizacao = ?\n" +
+                        "where codigo = ?");
+
+                stm.setInt(1, carteiraDigital.getCodigoParticipanteControleFinanceiro());
+                stm.setInt(2, carteiraDigital.getInstituicaoFinanceira().getValue());
+                stm.setBoolean(3, carteiraDigital.getAtivo());
+                stm.setTimestamp(4, java.sql.Timestamp.valueOf(carteiraDigital.getDataHoraAtualizacao()));
+                stm.setInt(5, carteiraDigital.getCodigo());
+
+                stm.executeUpdate();
+            } catch(RuntimeException | SQLException e){
+                throw new RuntimeException(e);
+            } finally{
+                this.closeConnection();
+            }
+        }
     }
 
     @Override

@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface IParticipanteRepository extends IBaseRepository<Participante> {
     List<Participante> getAll(int codigoUsuario, int codigoControleFinanceiro, String nome, String email);
+    Participante getItem(int codigoControleFinanceiro, int codigoUsuario);
 }

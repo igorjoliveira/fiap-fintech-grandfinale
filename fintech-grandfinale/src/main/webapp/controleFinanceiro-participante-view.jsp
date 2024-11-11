@@ -152,7 +152,6 @@
     }
 
     function setEditForm(item) {
-      console.log(item);
       $('#participanteForm')[0].reset();
       $('#participanteForm #codigo').val(item.codigo);
       $('#participanteForm #codigoControleFinanceiro').val(item.codigo_controle_financeiro);

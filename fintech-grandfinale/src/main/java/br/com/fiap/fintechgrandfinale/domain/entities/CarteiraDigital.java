@@ -2,6 +2,7 @@ package br.com.fiap.fintechgrandfinale.domain.entities;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.forma.pagamento.*;
 import br.com.fiap.fintechgrandfinale.domain.enums.InstituicaoFinanceira;
+import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,6 +65,13 @@ public class CarteiraDigital extends BaseModel {
         this.ativo = ativo;
     }
 
+    public void atualizarCarteiraDigital(int codigoParticipanteControleFinanceiro, InstituicaoFinanceira instituicaoFinanceira, Boolean ativo) {
+        this.setCodigoParticipanteControleFinanceiro(codigoParticipanteControleFinanceiro);
+        this.setInstituicaoFinanceira(instituicaoFinanceira);
+        this.setAtivo(ativo);
+        this.setDataHoraAtualizacao(LocalDateTime.now());
+    }
+
     public FormaPagamento adicionarCartaoCredito(String numero, String nome, String dataVencimento, String codigoSeguranca){
         return this.adicionarFormaPagamento(new CartaoCredito(this.getCodigo(), numero, nome, dataVencimento, codigoSeguranca));
     }
@@ -82,6 +90,30 @@ public class CarteiraDigital extends BaseModel {
     private FormaPagamento adicionarFormaPagamento(FormaPagamento formaPagamento){
         this.formaPagamentoLista.add(formaPagamento);
         return formaPagamento;
+    }
+
+    public String toJson() {
+        var usuarioJson = new JSONObject();
+        usuarioJson.put("codigo", this.getParticipante().getUsuario().getCodigo());
+        usuarioJson.put("nome", this.getParticipante().getUsuario().getNome());
+        usuarioJson.put("email", this.getParticipante().getUsuario().getEmail());
+
+        var controleFinanceiroJson = new JSONObject();
+        controleFinanceiroJson.put("codigo", this.getParticipante().getControleFinanceiro().getCodigo());
+        controleFinanceiroJson.put("descricao", this.getParticipante().getControleFinanceiro().getDescricao());
+
+        var participanteJson = new JSONObject();
+        participanteJson.put("codigo", this.getParticipante().getCodigo());
+        participanteJson.put("usuario", usuarioJson);
+        participanteJson.put("controle_financeiro", controleFinanceiroJson);
+
+        var json = new JSONObject();
+        json.put("codigo", this.getCodigo());
+        json.put("codigo_instituicao_financeira", this.getInstituicaoFinanceira().getValue());
+        json.put("ativo", this.getAtivo());
+        json.put("participante", participanteJson);
+
+        return json.toString();
     }
 }
 

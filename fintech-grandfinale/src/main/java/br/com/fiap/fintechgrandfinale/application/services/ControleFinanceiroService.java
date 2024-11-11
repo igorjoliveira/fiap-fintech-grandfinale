@@ -10,9 +10,9 @@ import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.ICarteiraDi
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IControleFinanceiroRepository;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IParticipanteRepository;
 import br.com.fiap.fintechgrandfinale.domain.utils.EnumUtils;
-import br.com.fiap.fintechgrandfinale.infra.data.repositories.CarteiraDigitalRepository;
-import br.com.fiap.fintechgrandfinale.infra.data.repositories.ControleFinanceiroRepository;
-import br.com.fiap.fintechgrandfinale.infra.data.repositories.ParticipanteRepository;
+import br.com.fiap.fintechgrandfinale.data.repositories.CarteiraDigitalRepository;
+import br.com.fiap.fintechgrandfinale.data.repositories.ControleFinanceiroRepository;
+import br.com.fiap.fintechgrandfinale.data.repositories.ParticipanteRepository;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -79,6 +79,20 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
     }
 
     @Override
+    public void insertCarteira(int codigoUsuario, CarteiraDigital form) throws SQLException {
+        var usuario = this.usuarioService.getUser(form.getParticipante().getUsuario().getEmail());
+
+        if(usuario != null) {
+            var participante = this.participanteRepository.getItem(form.getParticipante().getCodigoControleFinanceiro(), usuario.getCodigo());
+            var carteira = new CarteiraDigital(participante.getCodigo(), form.getInstituicaoFinanceira());
+            this.carteiraDigitalRepository.insert(carteira);
+        }
+        else{
+            throw new RuntimeException("Usuário não encontrado para o controle financeiro informado.");
+        }
+    }
+
+    @Override
     public void updateControleFinanceiro(int codigoUsuario, ControleFinanceiro form) {
         var controle = this.controleFinanceiroRepository.getById(form.getCodigo());
         controle.atualizarControleFinanceiro(form.getDescricao(), form.getAtivo());
@@ -101,6 +115,21 @@ public class ControleFinanceiroService implements IControleFinanceiroService {
         }
         else {
             throw new RuntimeException("Não foram encontrados dados para os códigos informados.");
+        }
+    }
+
+    @Override
+    public void updateCarteira(int codigoUsuario, CarteiraDigital form) throws SQLException {
+        var carteira = this.carteiraDigitalRepository.getById(form.getCodigo());
+        var usuario = this.usuarioService.getUser(form.getParticipante().getUsuario().getEmail());
+
+        if(carteira != null && usuario != null) {
+            var participante = this.participanteRepository.getItem(form.getParticipante().getCodigoControleFinanceiro(), usuario.getCodigo());
+            carteira.atualizarCarteiraDigital(participante.getCodigo(), form.getInstituicaoFinanceira(), form.getAtivo());
+            this.carteiraDigitalRepository.update(carteira);
+        }
+        else{
+            throw new RuntimeException("Não foram encontrados dados válidos.");
         }
     }
 }

@@ -3,7 +3,7 @@ package br.com.fiap.fintechgrandfinale.application.services;
 import br.com.fiap.fintechgrandfinale.application.interfaces.services.IUsuarioService;
 import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IUsuarioRepository;
-import br.com.fiap.fintechgrandfinale.infra.data.repositories.UsuarioRepository;
+import br.com.fiap.fintechgrandfinale.data.repositories.UsuarioRepository;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 

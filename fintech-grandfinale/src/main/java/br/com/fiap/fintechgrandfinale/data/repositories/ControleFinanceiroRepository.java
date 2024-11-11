@@ -1,7 +1,6 @@
-package br.com.fiap.fintechgrandfinale.infra.data.repositories;
+package br.com.fiap.fintechgrandfinale.data.repositories;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
-import br.com.fiap.fintechgrandfinale.domain.entities.Usuario;
 import br.com.fiap.fintechgrandfinale.domain.interfaces.repositories.IControleFinanceiroRepository;
 
 import java.sql.SQLException;

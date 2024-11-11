@@ -1,12 +1,13 @@
 package br.com.fiap.fintechgrandfinale.domain.enums;
 
 public enum InstituicaoFinanceira {
-    C6(1),
-    XP(2),
-    Itau(3),
-    Nubank(4),
-    Bradesco(5),
-    Santander(6);
+    BB(1),
+    C6(2),
+    XP(3),
+    Itau(4),
+    Nubank(5),
+    Bradesco(6),
+    Santander(7);
 
     private final int value;
     public int getValue() { return this.value; }

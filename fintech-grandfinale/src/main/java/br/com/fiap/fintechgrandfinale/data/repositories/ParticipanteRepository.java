@@ -1,4 +1,4 @@
-package br.com.fiap.fintechgrandfinale.infra.data.repositories;
+package br.com.fiap.fintechgrandfinale.data.repositories;
 
 import br.com.fiap.fintechgrandfinale.domain.entities.ControleFinanceiro;
 import br.com.fiap.fintechgrandfinale.domain.entities.Participante;
@@ -24,6 +24,36 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
 
                 var stm = cnn.prepareStatement("select * from participante where CODIGO = ?");
                 stm.setInt(1, id);
+                var result = stm.executeQuery();
+
+                if (result.next()) {
+                    participante = new Participante();
+                    participante.setCodigo(result.getInt("CODIGO"));
+                    participante.setCodigoUsuario(result.getInt("CODIGO_USUARIO"));
+                    participante.setCodigoControleFinanceiro(result.getInt("CODIGO_CONTROLE_FINANCEIRO"));
+                    participante.setAtivo(result.getBoolean("ATIVO"));
+                    participante.setProprietario(result.getBoolean("PROPRIETARIO"));
+                }
+            }
+        } catch (RuntimeException | SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            this.closeConnection();
+        }
+
+        return participante;
+    }
+
+    @Override
+    public Participante getItem(int codigoControleFinanceiro, int codigoUsuario) {
+        Participante participante = null;
+        try{
+            var cnn = this.getConnection();
+            if(cnn != null) {
+
+                var stm = cnn.prepareStatement("select * from participante where codigo_controle_financeiro = ? and codigo_usuario = ?");
+                stm.setInt(1, codigoControleFinanceiro);
+                stm.setInt(2, codigoUsuario);
                 var result = stm.executeQuery();
 
                 if (result.next()) {
@@ -86,9 +116,9 @@ public class ParticipanteRepository extends BaseRepository<Participante> impleme
                 stm.setBoolean(4, participante.getProprietario());
                 stm.setInt(5, participante.getCodigo());
                 stm.executeUpdate();
-            } catch(RuntimeException | SQLException e){
+            } catch (RuntimeException | SQLException e) {
                 throw new RuntimeException(e);
-            } finally{
+            } finally {
                 this.closeConnection();
             }
         }
